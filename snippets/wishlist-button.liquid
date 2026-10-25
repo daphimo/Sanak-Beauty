@@ -1,0 +1,19 @@
+{% doc %}
+  Renders a persistent local wishlist toggle for a product.
+  @param {product} product - Product represented by the button.
+  @param {string} [class] - Additional button class.
+{% enddoc %}
+
+{%- if product != blank -%}
+  <button
+    type="button"
+    class="sanak-wishlist-button {{ class }}"
+    data-wishlist-toggle
+    data-product-handle="{{ product.handle | escape }}"
+    data-product-title="{{ product.title | escape }}"
+    aria-pressed="false"
+    aria-label="Add {{ product.title | escape }} to wishlist"
+  >
+    {% render 'icons', icon: 'heart' %}
+  </button>
+{%- endif -%}

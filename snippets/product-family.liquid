@@ -1,0 +1,24 @@
+{% doc %}
+  Renders product siblings from product.metafields.custom.family_products.
+  @param {product} product - Current product.
+  @param {block} block - Product information block.
+{% enddoc %}
+
+{%- assign family_products = product.metafields.custom.family_products.value -%}
+{%- if family_products != blank -%}
+  <div class="product-family" {{ block.shopify_attributes }}>
+    <p class="product-family__label">{{ block.settings.label | escape }} <strong>{{ product.title | escape }}</strong></p>
+    <div class="product-family__items" role="list">
+      {%- for family_product in family_products -%}
+        <a class="product-family__item{% if family_product.id == product.id %} is-current{% endif %}" href="{{ family_product.url }}" data-family-product role="listitem" aria-label="View {{ family_product.title | escape }}" {% if family_product.id == product.id %}aria-current="page"{% endif %}>
+          {%- if family_product.featured_image != blank -%}{{ family_product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: family_product.title }}{%- endif -%}
+          <span>{{ family_product.title | escape }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+.product-family{margin:2rem 0}.product-family__label{margin:0 0 1rem}.product-family__items{display:flex;gap:1rem;overflow-x:auto;padding:.2rem}.product-family__item{flex:0 0 8rem;color:inherit;text-decoration:none}.product-family__item img{display:block;width:8rem;aspect-ratio:1;object-fit:cover;border:1px solid var(--sanak-grey);transition:border-color .25s,transform .25s}.product-family__item span{display:block;margin-top:.5rem;font-size:1.1rem;line-height:1.25}.product-family__item:hover img,.product-family__item.is-current img{border-color:var(--sanak-green);transform:translateY(-2px)}
+{% endstylesheet %}

@@ -1,0 +1,24 @@
+{%- liquid
+  assign hero_image = section.settings.image
+  assign hero_url = 'sanak-hero.jpg' | asset_url
+  if hero_image != blank
+    assign hero_url = hero_image | image_url: width: 2400
+  endif
+-%}
+<section class="sanak-hero color-{{ section.settings.color_scheme }}" style="--hero-image:url('{{ hero_url }}');--hero-height:{{ section.settings.height }}vh">
+  <div class="sanak-hero__shade"></div>
+  <div class="sanak-hero__content page-width">
+    {%- if section.settings.eyebrow != blank -%}<p class="sanak-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h1 class="sanak-hero__heading">{{ section.settings.heading }}</h1>
+    {%- if section.settings.text != blank -%}<div class="sanak-hero__text rte">{{ section.settings.text }}</div>{%- endif -%}
+    {%- if section.settings.button_label != blank -%}<a class="button button--primary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} {% render 'icons', icon: 'arrow' %}</a>{%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.sanak-hero{position:relative;min-height:clamp(54rem,var(--hero-height),92rem);display:grid;align-items:end;background-image:var(--hero-image);background-position:center;background-size:cover;overflow:hidden}.sanak-hero__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,32,27,.72),rgba(20,32,27,.08) 72%)}.sanak-hero__content{position:relative;width:100%;padding-top:8rem;padding-bottom:8rem;color:#fff}.sanak-hero__eyebrow{font:600 1.2rem/1.2 var(--font-body-family);letter-spacing:.18em;text-transform:uppercase}.sanak-hero__heading{max-width:10ch;margin:1rem 0;font-size:clamp(5rem,9vw,12rem);line-height:.87;letter-spacing:-.045em;color:inherit}.sanak-hero__text{max-width:48rem;margin:0 0 3rem;font-size:clamp(1.6rem,2vw,2rem)}.sanak-hero .button .sanak-icon{margin-left:1rem}@media(max-width:749px){.sanak-hero{min-height:72rem;background-position:62% center}.sanak-hero__shade{background:linear-gradient(0deg,rgba(20,32,27,.82),rgba(20,32,27,0) 80%)}.sanak-hero__content{padding-bottom:5rem}.sanak-hero__heading{font-size:clamp(5.2rem,17vw,8rem)}}
+{% endstylesheet %}
+
+{% schema %}
+{"name":"Sanak campaign hero","tag":"section","class":"section","settings":[{"type":"image_picker","id":"image","label":"Campaign image"},{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Made for skin"},{"type":"inline_richtext","id":"heading","label":"Heading","default":"Meant for soul."},{"type":"richtext","id":"text","label":"Text","default":"<p>Art-driven, performance-led makeup created for Brown skin.</p>"},{"type":"text","id":"button_label","label":"Button label","default":"Shop the collection"},{"type":"url","id":"button_link","label":"Button link"},{"type":"range","id":"height","label":"Desktop height","min":55,"max":100,"step":5,"unit":"vh","default":85},{"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"}],"presets":[{"name":"Sanak campaign hero"}]}
+{% endschema %}

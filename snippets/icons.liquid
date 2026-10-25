@@ -1,0 +1,22 @@
+{% doc %}
+  Renders any SVG icon stored in theme assets through one shared entry point.
+  @param {string} icon - Asset basename without the icon- prefix or .svg suffix.
+  @param {string} [class] - Additional wrapper class.
+  @param {string} [label] - Accessible label; omitted icons are decorative.
+  @example
+  {% render 'icons', icon: 'heart', class: 'button__icon' %}
+{% enddoc %}
+
+{%- liquid
+  assign icon_asset = 'icon-' | append: icon | append: '.svg'
+  assign icon_class = 'sanak-icon'
+  if class != blank
+    assign icon_class = icon_class | append: ' ' | append: class
+  endif
+-%}
+<span
+  class="{{ icon_class }}"
+  {% if label != blank %}role="img" aria-label="{{ label | escape }}"{% else %}aria-hidden="true"{% endif %}
+>
+  {{- icon_asset | inline_asset_content -}}
+</span>

@@ -1,0 +1,24 @@
+<section class="sanak-testimonials color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <div class="sanak-testimonials__header"><p>{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading }}</h2></div>
+    <div class="sanak-testimonials__track" role="list">
+      {%- for block in section.blocks -%}
+        <article class="sanak-testimonial" role="listitem" {{ block.shopify_attributes }}>
+          <div class="sanak-testimonial__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+            {%- for star in (1..5) -%}{% if star <= block.settings.rating %}{% render 'icons', icon: 'star' %}{% endif %}{%- endfor -%}
+          </div>
+          <blockquote>“{{ block.settings.quote | escape }}”</blockquote>
+          <p class="sanak-testimonial__name">{{ block.settings.name | escape }}{% if block.settings.verified %} · Verified buyer{% endif %}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.sanak-testimonials{padding:clamp(6rem,8vw,11rem) 0}.sanak-testimonials__header{display:flex;justify-content:space-between;align-items:end;gap:2rem;border-bottom:1px solid var(--sanak-grey)}.sanak-testimonials__header>p{text-transform:uppercase;letter-spacing:.16em}.sanak-testimonials h2{margin:0 0 2rem;font-size:clamp(4rem,6vw,8rem)}.sanak-testimonials__track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(30rem,1fr);gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:3rem 0}.sanak-testimonial{scroll-snap-align:start;padding:clamp(2.4rem,4vw,5rem);border:1px solid var(--sanak-grey);background:rgba(255,255,255,.32)}.sanak-testimonial__stars{display:flex;gap:.4rem;color:var(--sanak-green)}.sanak-testimonial blockquote{margin:3rem 0;font:400 clamp(2.5rem,3vw,4rem)/1.12 var(--font-heading-family)}.sanak-testimonial__name{text-transform:uppercase;letter-spacing:.1em;font-size:1.2rem}@media(max-width:749px){.sanak-testimonials__header{display:block}.sanak-testimonials__track{grid-auto-columns:85%}}
+{% endstylesheet %}
+
+{% schema %}
+{"name":"Sanak testimonials","tag":"section","class":"section","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Loved in every shade"},{"type":"inline_richtext","id":"heading","label":"Heading","default":"Real skin. Real stories."},{"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"}],"blocks":[{"type":"testimonial","name":"Testimonial","settings":[{"type":"range","id":"rating","label":"Rating","min":1,"max":5,"step":1,"default":5},{"type":"textarea","id":"quote","label":"Quote","default":"The pigment is rich, effortless and actually made with my skin in mind."},{"type":"text","id":"name","label":"Customer name","default":"Sanak customer"},{"type":"checkbox","id":"verified","label":"Verified buyer","default":true}]}],"max_blocks":8,"presets":[{"name":"Sanak testimonials","blocks":[{"type":"testimonial"},{"type":"testimonial"},{"type":"testimonial"}]}]}
+{% endschema %}
