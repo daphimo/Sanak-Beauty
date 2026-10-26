@@ -13,19 +13,62 @@
   "sections": {
     "footer": {
       "type": "custom-footer",
+      "blocks": {
+        "customer-care": {
+          "type": "menu",
+          "settings": {
+            "heading": "Customer care",
+            "menu": "customer-care",
+            "text": ""
+          }
+        },
+        "explore": {
+          "type": "menu",
+          "settings": {
+            "heading": "Explore",
+            "menu": "explore",
+            "text": ""
+          }
+        },
+        "about": {
+          "type": "menu",
+          "settings": {
+            "heading": "About Sanak",
+            "menu": "about-sanak",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "customer-care",
+        "explore",
+        "about"
+      ],
       "settings": {
+        "background_color": "#174c45",
+        "text_color": "#faf7ef",
+        "heading_color": "#faf7ef",
+        "link_hover_color": "#dcdcdc",
+        "divider_color": "#dcdcdc",
+        "wordmark_color": "#faf7ef",
+        "padding_top": 72,
+        "padding_bottom": 40,
+        "column_gap": 40,
+        "mobile_gap": 24,
+        "collapse_desktop": false,
+        "collapse_mobile": true,
         "show_newsletter": true,
+        "newsletter_heading": "Stay in the know",
+        "newsletter_text": "<p>Beauty notes, new rituals and thoughtful launches.</p>",
         "show_contact": true,
+        "contact_text": "<p>Questions? We would love to hear from you.</p>",
         "show_social": true,
+        "wordmark": "SANAK BEAUTY",
+        "wordmark_size": 13,
+        "wordmark_alignment": "center",
         "show_policy_links": true,
         "show_payment_icons": true
-      },
-      "blocks": {
-        "customer-care": { "type": "menu", "settings": { "heading": "Customer care" } },
-        "explore": { "type": "menu", "settings": { "heading": "Explore" } },
-        "about": { "type": "menu", "settings": { "heading": "About Sanak" } }
-      },
-      "block_order": ["customer-care", "explore", "about"]
+      }
     }
   },
   "order": [

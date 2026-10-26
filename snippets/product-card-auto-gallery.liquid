@@ -1,0 +1,44 @@
+{% doc %}
+  Renders every product image as a transform-based product-card gallery.
+
+  @param {product} product - Product whose images are rendered.
+  @param {boolean} [lazy_load] - Whether the first image should be lazy loaded.
+{% enddoc %}
+
+{%- liquid
+  assign image_loading = 'lazy'
+  if lazy_load == false
+    assign image_loading = 'eager'
+  endif
+-%}
+
+<div
+  class="media media--transparent sanak-product-card__gallery sanak-auto-gallery splide"
+  data-auto-gallery
+  data-splide-js="{{ 'splide.min.js' | asset_url }}"
+  data-splide-css="{{ 'splide-core.min.css' | asset_url }}"
+  aria-label="{{ product.title | escape }}"
+>
+  <div class="splide__track">
+    <ul class="splide__list">
+    {%- for gallery_image in product.images -%}
+      <li
+        class="sanak-auto-gallery__slide splide__slide"
+        data-auto-gallery-slide
+        data-gallery-index="{{ forloop.index0 }}"
+      >
+        {{
+          gallery_image
+          | image_url: width: 1066
+          | image_tag:
+            class: 'motion-reduce sanak-auto-gallery__image',
+            widths: '165, 360, 533, 720, 940, 1066',
+            sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+            loading: image_loading
+        }}
+      </li>
+      {%- assign image_loading = 'lazy' -%}
+    {%- endfor -%}
+    </ul>
+  </div>
+</div>

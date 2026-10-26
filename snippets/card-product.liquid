@@ -30,9 +30,11 @@
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
   {{ 'quick-add.css' | asset_url | stylesheet_tag }}
   {{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+  {{ 'product-card-auto-gallery.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'custom-product-card.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-card-auto-gallery.js' | asset_url }}" defer="defer"></script>
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -86,6 +88,9 @@
         >
           {%- if card_product.featured_media -%}
             <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+              {%- if card_gallery_type == 'auto' -%}
+                {% render 'product-card-auto-gallery', product: card_product, lazy_load: lazy_load %}
+              {%- else -%}
               <div class="media media--transparent media--hover-effect sanak-product-card__gallery">
                 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
                 <img
@@ -135,23 +140,13 @@
                   >
                 {%- endif -%}
 
-                {%- if card_gallery_type == 'auto' -%}
-                  {%- assign gallery_images = card_product.media | where: 'media_type', 'image' -%}
-                  {%- for gallery_image in gallery_images offset: 1 -%}
-                    {{
-                      gallery_image
-                      | image_url: width: 1066
-                      | image_tag:
-                        class: 'motion-reduce sanak-product-card__image',
-                        widths: '165, 360, 533, 720, 940, 1066',
-                        sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
-                        loading: 'lazy',
-                        data-card-gallery-image: '',
-                        data-gallery-index: forloop.index
-                    }}
-                  {%- endfor -%}
-                {%- endif -%}
               </div>
+              {%- endif -%}
+              <a
+                href="{{ card_product.url }}"
+                class="sanak-product-card__media-link"
+                aria-label="{{ card_product.title | escape }}"
+              ></a>
               <div class="sanak-product-card__overlay">
                 <div class="sanak-product-card__overlay-top">
                   {%- if card_product.metafields.custom.product_impact_text.value != blank -%}
@@ -165,13 +160,6 @@
                   {%- endif -%}
                   {% render 'wishlist-button', product: card_product %}
                 </div>
-                {%- if card_gallery_type == 'auto' and gallery_images.size > 1 -%}
-                  <div class="sanak-product-card__dots" aria-hidden="true">
-                    {%- for gallery_image in gallery_images -%}
-                      <span class="sanak-product-card__dot{% if forloop.first %} is-active{% endif %}" data-gallery-dot="{{ forloop.index0 }}"></span>
-                    {%- endfor -%}
-                  </div>
-                {%- endif -%}
                 <div class="sanak-product-card__quick-add-slot" data-card-quick-add-slot></div>
               </div>
             </div>

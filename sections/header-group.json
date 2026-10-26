@@ -56,15 +56,16 @@
       "type": "header",
       "settings": {
         "logo_position": "middle-center",
-        "normal_logo": "shopify://shop_images/Sanak_Beauty_Logo_250_x_50_px.svg",
-        "logo_width": 90,
+        "normal_logo": "shopify://shop_images/SanakBeautyLogo250x50px_b9f6c6c1-1ba1-47ff-94cc-840261c77648.png",
+        "logo_width": 200,
+        "mobile_logo_width": 120,
         "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
         "enable_transparent_header": true,
-        "transparent_logo": "shopify://shop_images/white.svg",
+        "transparent_logo": "shopify://shop_images/white_dffb8261-e6ed-4cf8-ac48-6eae8e23b78a.png",
         "transparent_scroll_threshold": 80,
         "color_scheme": "scheme-5",
         "menu_color_scheme": "scheme-5",
@@ -74,10 +75,15 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
+    },
+    "mobile-dock": {
+      "type": "mobile-dock",
+      "settings": {}
     }
   },
   "order": [
     "announcement-bar",
-    "header"
+    "header",
+    "mobile-dock"
   ]
 }
