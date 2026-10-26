@@ -73,7 +73,7 @@
         "mobile_horizontal_padding": 24,
         "enable_overlay": true,
         "overlay_color": "#202B26",
-        "overlay_intensity": 20,
+        "overlay_intensity": 30,
         "desktop_height_mode": "custom",
         "desktop_height": 650,
         "mobile_height_mode": "custom",
