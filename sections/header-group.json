@@ -18,7 +18,7 @@
           "type": "announcement",
           "settings": {
             "text": "Free shipping on orders over ₹999",
-            "text_color": "#FAF7EF",
+            "text_color": "#faf7ef",
             "link": "",
             "open_new_tab": false
           }
@@ -28,16 +28,16 @@
         "announcement-bar-0"
       ],
       "settings": {
-        "background_color": "#174C45",
-        "alternate_background_color": "#202B26",
+        "background_color": "#174c45",
+        "alternate_background_color": "#202b26",
         "background_style": "primary",
-        "text_color": "#FAF7EF",
-        "separator_color": "#DCDCDC",
+        "text_color": "#faf7ef",
+        "separator_color": "#dcdcdc",
         "font_weight": "500",
         "letter_spacing": 4,
         "horizontal_spacing": 32,
         "enable_marquee": true,
-        "animation_speed": 24,
+        "animation_speed": 10,
         "direction": "left",
         "pause_on_hover": true,
         "enable_mobile": true,
@@ -55,13 +55,14 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_position": "middle-left",
+        "logo_position": "middle-center",
         "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
-        "enable_transparent_header": false,
+        "enable_transparent_header": true,
+        "transparent_logo": "shopify://shop_images/white.svg",
         "transparent_scroll_threshold": 80,
         "color_scheme": "scheme-5",
         "menu_color_scheme": "scheme-5",

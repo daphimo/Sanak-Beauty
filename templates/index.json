@@ -9,42 +9,207 @@
  */
 {
   "sections": {
-    "image_banner": {"type":"sanak-hero","settings":{"eyebrow":"Made for skin","heading":"Meant for soul.","text":"<p>Art-driven, performance-led makeup created for Brown skin.</p>","button_label":"Shop the collection","button_link":"shopify://collections/all","height":85,"color_scheme":"scheme-1"}},
-    "featured_collection": {
-      "type": "featured-collection",
+    "custom_static_hero_9QWFpH": {
+      "type": "custom-static-hero",
+      "blocks": {
+        "title_9EkXJz": {
+          "type": "title",
+          "settings": {
+            "heading": "Makeup for your <em><strong>kind</strong></em> of beautiful.",
+            "heading_color": "#FFFFFF",
+            "highlight_color": "#FFFFFF",
+            "desktop_size": 76,
+            "mobile_size": 48,
+            "font_weight": "400",
+            "line_height": 95,
+            "letter_spacing": -35,
+            "max_width": 660,
+            "heading_level": "h2"
+          }
+        },
+        "buttons_CBqc7A": {
+          "type": "buttons",
+          "settings": {
+            "button_gap": 24,
+            "button_1_enabled": true,
+            "button_1_label": "Explore the collection",
+            "button_1_link": "shopify://collections/all",
+            "button_1_type": "primary",
+            "button_1_arrow": true,
+            "button_1_new_tab": false,
+            "button_1_background": "rgba(0,0,0,0)",
+            "button_1_text": "#FAF7EF",
+            "button_1_border": "#FAF7EF",
+            "button_1_radius": 30,
+            "button_2_enabled": true,
+            "button_2_label": "Meet Sanak",
+            "button_2_link": "shopify://collections/all",
+            "button_2_type": "primary",
+            "button_2_arrow": true,
+            "button_2_new_tab": false,
+            "button_2_background": "rgba(0,0,0,0)",
+            "button_2_text": "#FAF7EF",
+            "button_2_border": "#FAF7EF",
+            "button_2_radius": 30
+          }
+        }
+      },
+      "block_order": [
+        "title_9EkXJz",
+        "buttons_CBqc7A"
+      ],
+      "name": "Custom static hero",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "desktop_image": "shopify://shop_images/Hero_Visual_a5ae1f72-158d-42ab-9940-769b53504acc.jpg",
+        "background_color": "#FAF7EF",
+        "default_text_color": "#202B26",
+        "content_position": "bottom-right",
+        "content_alignment": "left",
+        "content_width": 700,
+        "block_gap": 20,
+        "desktop_vertical_padding": 80,
+        "desktop_horizontal_padding": 60,
+        "mobile_vertical_padding": 50,
+        "mobile_horizontal_padding": 24,
+        "enable_overlay": true,
+        "overlay_color": "#202B26",
+        "overlay_intensity": 30,
+        "desktop_height_mode": "custom",
+        "desktop_height": 650,
+        "mobile_height_mode": "custom",
+        "mobile_height": 680,
+        "accessibility_label": "Featured campaign"
+      }
+    },
+    "custom_featured_collection_JXrkV9": {
+      "type": "custom-featured-collection",
+      "name": "Custom featured",
+      "settings": {
+        "collection": "frontpage",
+        "products_to_show": 5,
+        "title": "Featured Collection",
+        "title_override": "",
+        "button_label": "Shop all",
         "image_ratio": "adapt",
-        "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "enable_slider": true,
+        "slides_desktop": 3,
+        "slides_tablet": 2,
+        "slides_mobile": "1",
+        "card_gap": 20,
+        "transition_speed": 500,
+        "slider_behavior": "rewind",
+        "enable_drag": true,
+        "show_navigation": true,
+        "show_mobile_navigation": true,
+        "background_color": "#FAF7EF",
+        "text_color": "#202B26",
+        "title_color": "#202B26",
+        "button_background": "#174C45",
+        "button_text_color": "#FAF7EF",
+        "title_size": 40,
+        "title_size_mobile": 30,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "header_spacing": 32,
+        "button_margin_top": 40
       }
     },
-    "sanak_story":{"type":"sanak-story","settings":{"eyebrow":"From the soul","heading":"Beauty is an art form.","text":"<p>Expressive colour. High-impact performance. Thoughtfully made for the full depth of Brown skin.</p>","link_label":"Discover our story","color_scheme":"scheme-3"}},
-    "sanak_testimonials":{"type":"sanak-testimonials","blocks":{"review_1":{"type":"testimonial","settings":{"rating":5,"quote":"The pigment is rich, effortless and actually made with my skin in mind.","name":"Ananya","verified":true}},"review_2":{"type":"testimonial","settings":{"rating":5,"quote":"Editorial colour that still feels wearable. The texture is beautiful.","name":"Maya","verified":true}},"review_3":{"type":"testimonial","settings":{"rating":5,"quote":"Finally, shades with depth and intention. This has become my everyday ritual.","name":"Rhea","verified":true}}},"block_order":["review_1","review_2","review_3"],"settings":{"eyebrow":"Loved in every shade","heading":"Real skin. Real stories.","color_scheme":"scheme-1"}}
+    "custom_split_image_content_slider_yDgWYr": {
+      "type": "custom-split-image-content-slider",
+      "blocks": {
+        "slide_N9yD9g": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1.jpg",
+            "image_position": "center center",
+            "image_overlay": true,
+            "image_overlay_color": "#202B26",
+            "image_overlay_opacity": 15,
+            "eyebrow": "A LITTLE MORE YOU",
+            "title": "Beauty that feels like you.",
+            "description": "Discover thoughtfully chosen essentials designed to make every day feel special.",
+            "content_position": "center",
+            "text_alignment": "left",
+            "show_cta": true,
+            "cta_label": "Explore the collection",
+            "cta_link": "",
+            "cta_style": "primary",
+            "background_image": "shopify://shop_images/2.jpg",
+            "background_color": "#FAF7EF",
+            "background_overlay_color": "#FAF7EF",
+            "background_overlay_opacity": 70,
+            "eyebrow_color": "#174C45",
+            "title_color": "#202B26",
+            "description_color": "#202B26",
+            "highlight_color": "#174C45",
+            "cta_background": "#174C45",
+            "cta_text_color": "#FAF7EF",
+            "cta_border_color": "#174C45"
+          }
+        },
+        "slide_k4pfPY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2.jpg",
+            "image_position": "center center",
+            "image_overlay": true,
+            "image_overlay_color": "#202B26",
+            "image_overlay_opacity": 15,
+            "eyebrow": "A LITTLE MORE YOU",
+            "title": "Beauty that feels like you.",
+            "description": "Discover thoughtfully chosen essentials designed to make every day feel special.",
+            "content_position": "center",
+            "text_alignment": "left",
+            "show_cta": true,
+            "cta_label": "Explore the collection",
+            "cta_link": "",
+            "cta_style": "primary",
+            "background_image": "shopify://shop_images/1.jpg",
+            "background_color": "#FAF7EF",
+            "background_overlay_color": "#FAF7EF",
+            "background_overlay_opacity": 70,
+            "eyebrow_color": "#174C45",
+            "title_color": "#202B26",
+            "description_color": "#202B26",
+            "highlight_color": "#174C45",
+            "cta_background": "#174C45",
+            "cta_text_color": "#FAF7EF",
+            "cta_border_color": "#174C45"
+          }
+        }
+      },
+      "block_order": [
+        "slide_N9yD9g",
+        "slide_k4pfPY"
+      ],
+      "name": "Split image slider",
+      "settings": {
+        "accessibility_label": "Featured stories",
+        "image_width": 50,
+        "show_border": false,
+        "desktop_height_mode": "custom",
+        "desktop_height": 650,
+        "mobile_height_mode": "custom",
+        "mobile_height": 420,
+        "mobile_order": "image-first",
+        "autoplay": true,
+        "autoplay_interval": 5,
+        "transition_speed": 600,
+        "end_behavior": "loop",
+        "show_arrows": true,
+        "show_pagination": true
+      }
+    }
   },
   "order": [
-    "image_banner",
-    "featured_collection",
-    "sanak_story",
-    "sanak_testimonials"
+    "custom_static_hero_9QWFpH",
+    "custom_featured_collection_JXrkV9",
+    "custom_split_image_content_slider_yDgWYr"
   ]
 }
