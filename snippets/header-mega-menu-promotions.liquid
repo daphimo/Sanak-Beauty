@@ -1,0 +1,23 @@
+{% doc %}
+  Renders promotional blocks assigned to a navigation label.
+  @param {object} section - Header section.
+  @param {string} menu_label - Navigation label used for normalized matching.
+  @param {boolean} [mobile] - Adds the mobile drawer modifier.
+  @example
+  {% render 'header-mega-menu-promotions', section: section, menu_label: link.title %}
+{% enddoc %}
+
+{%- assign menu_key = menu_label | handleize -%}
+<div class="mega-menu-promotions{% if mobile %} mega-menu-promotions--mobile{% endif %}">
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'mega_menu_promotion' and block.settings.menu_item_label != blank -%}
+      {%- assign block_key = block.settings.menu_item_label | handleize -%}
+      {%- if block_key == menu_key -%}
+        <div class="mega-menu-promotions__group"{% unless mobile %} {{ block.shopify_attributes }}{% endunless %}>
+          {%- render 'header-promotion-card', image: block.settings.card_1_image, image_alt: block.settings.card_1_image_alt, title: block.settings.card_1_title, content: block.settings.card_1_content, link: block.settings.card_1_link, link_label: block.settings.card_1_link_label -%}
+          {%- render 'header-promotion-card', image: block.settings.card_2_image, image_alt: block.settings.card_2_image_alt, title: block.settings.card_2_title, content: block.settings.card_2_content, link: block.settings.card_2_link, link_label: block.settings.card_2_link_label -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+</div>

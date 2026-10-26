@@ -32,8 +32,21 @@
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
+                {%- liquid
+                  assign has_promotion = false
+                  assign menu_key = link.title | handleize
+                  for block in section.blocks
+                    if block.type == 'mega_menu_promotion' and block.settings.menu_item_label != blank
+                      assign block_key = block.settings.menu_item_label | handleize
+                      if block_key == menu_key
+                        assign has_promotion = true
+                        break
+                      endif
+                    endif
+                  endfor
+                -%}
                 <li>
-                  {%- if link.links != blank -%}
+                  {%- if link.links != blank or has_promotion -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
                       <summary
                         id="HeaderDrawer-{{ link.handle }}"
@@ -126,6 +139,9 @@
                               </li>
                             {%- endfor -%}
                           </ul>
+                          {%- if has_promotion -%}
+                            {%- render 'header-mega-menu-promotions', section: section, menu_label: link.title, mobile: true -%}
+                          {%- endif -%}
                         </div>
                       </div>
                     </details>

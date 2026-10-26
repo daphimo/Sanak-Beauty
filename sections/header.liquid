@@ -12,8 +12,12 @@
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
-{%- if section.settings.menu_type_desktop == 'mega' -%}
+{%- if section.settings.menu != blank -%}
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+
+{%- if section.settings.enable_transparent_header and request.page_type == 'index' -%}
+  {{ 'component-transparent-header.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
 
 <style>
@@ -135,18 +139,32 @@
 -%}
 
 {% liquid
+  assign transparent_header_active = false
+  if section.settings.enable_transparent_header and request.page_type == 'index'
+    assign transparent_header_active = true
+  endif
+
   assign header_tag = 'div'
 
-  if section.settings.sticky_header_type != 'none'
+  if section.settings.sticky_header_type != 'none' or transparent_header_active
     assign header_tag = 'sticky-header'
+  endif
+
+  assign effective_sticky_type = section.settings.sticky_header_type
+  if transparent_header_active
+    assign effective_sticky_type = 'always'
   endif
 %}
 
 <{{ header_tag }}
   {% if header_tag == 'sticky-header' %}
-    data-sticky-type="{{ section.settings.sticky_header_type }}"
+    data-sticky-type="{{ effective_sticky_type }}"
   {% endif %}
-  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
+  {% if transparent_header_active %}
+    data-transparent-header
+    data-transparent-threshold="{{ section.settings.transparent_scroll_threshold }}"
+  {% endif %}
+  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if transparent_header_active %} header-wrapper--transparent{% endif %}"
 >
   {%- liquid
     assign social_links = false
@@ -172,7 +190,7 @@
       endif
 
       if section.settings.menu != blank
-        render 'header-drawer', show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
+        render 'header-drawer', section: section, show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
       endif
 
       if render_search_left
@@ -186,24 +204,15 @@
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-            {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-            {{
-              settings.logo
-              | image_url: width: 600
-              | image_tag:
-                class: 'header__heading-logo motion-reduce',
-                widths: widths,
-                height: logo_height,
-                width: settings.logo_width,
-                alt: logo_alt,
-                sizes: sizes,
-                preload: true
-            }}
-          </div>
+          {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+          {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+          {% render 'header-logo',
+            transparent_logo: section.settings.transparent_logo,
+            transparent_header_active: transparent_header_active,
+            sizes: sizes,
+            widths: widths,
+            motion_class: ' motion-reduce'
+          %}
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
         {%- endif -%}
@@ -216,9 +225,9 @@
     {%- liquid
       if section.settings.menu != blank
         if section.settings.menu_type_desktop == 'dropdown'
-          render 'header-dropdown-menu'
+          render 'header-dropdown-menu', section: section
         elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
+          render 'header-mega-menu', section: section
         endif
       endif
     %}
@@ -229,24 +238,14 @@
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-            {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
-            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-            {{
-              settings.logo
-              | image_url: width: 600
-              | image_tag:
-                class: 'header__heading-logo',
-                widths: widths,
-                height: logo_height,
-                width: settings.logo_width,
-                alt: logo_alt,
-                sizes: sizes,
-                preload: true
-            }}
-          </div>
+          {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
+          {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+          {% render 'header-logo',
+            transparent_logo: section.settings.transparent_logo,
+            transparent_header_active: transparent_header_active,
+            sizes: sizes,
+            widths: widths
+          %}
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
         {%- endif -%}
@@ -300,7 +299,7 @@
       {%- endfor -%}
 
       <a href="{{ routes.root_url }}pages/wishlist" class="header__icon header__icon--wishlist link focus-inset" aria-label="Wishlist">
-        {% render 'icons', icon: 'heart' %}
+        <span class="svg-wrapper header__icon-wrapper">{% render 'icons', icon: 'heart' %}</span>
         <span class="sanak-wishlist-count" data-wishlist-count data-count="0"></span>
       </a>
 
@@ -340,6 +339,12 @@
 
     connectedCallback() {
       this.header = document.querySelector('.section-header');
+      this.transparentHeader = this.hasAttribute('data-transparent-header');
+      this.transparentThreshold = Number(this.dataset.transparentThreshold) || 80;
+      this.announcementBar = this.transparentHeader
+        ? this.header.parentElement?.querySelector('.custom-marquee-announcement-section custom-marquee')
+        : null;
+      this.announcementHeight = 0;
       this.mobileMediaQuery = window.matchMedia('(max-width: 990px)');
       this.headerIsAlwaysSticky =
         this.getAttribute('data-sticky-type') === 'always' ||
@@ -349,6 +354,12 @@
       this.setHeaderHeight();
 
       this.mobileMediaQuery.addEventListener('change', this.setHeaderHeight);
+
+      if (this.announcementBar) {
+        this.announcementResizeObserver = new ResizeObserver(() => this.updateAnnouncementHeight());
+        this.announcementResizeObserver.observe(this.announcementBar);
+        this.updateAnnouncementHeight();
+      }
 
       if (this.headerIsAlwaysSticky) {
         this.header.classList.add('shopify-section-header-sticky');
@@ -364,17 +375,38 @@
       this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
       window.addEventListener('scroll', this.onScrollHandler, false);
 
+      if (this.transparentHeader) {
+        this.updateTransparentState();
+      }
+
       this.createObserver();
     }
 
     setHeaderHeight() {
-      document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+      document.documentElement.style.setProperty('--header-height', `${this.offsetHeight}px`);
+    }
+
+    updateAnnouncementHeight() {
+      this.announcementHeight = this.announcementBar?.offsetHeight || 0;
+      this.updateTransparentState();
+    }
+
+    updateTransparentState() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const isScrolled = scrollTop > this.transparentThreshold;
+      const announcementOffset = isScrolled ? 0 : Math.max(0, this.announcementHeight - scrollTop);
+
+      this.classList.toggle('is-scrolled', isScrolled);
+      this.header.classList.toggle('transparent-header-is-scrolled', isScrolled);
+      this.style.setProperty('--transparent-header-offset', `${announcementOffset}px`);
     }
 
     disconnectedCallback() {
       this.mobileMediaQuery.removeEventListener('change', this.setHeaderHeight);
       this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
       window.removeEventListener('scroll', this.onScrollHandler);
+      this.announcementResizeObserver?.disconnect();
+      this.header.classList.remove('transparent-header-is-scrolled');
     }
 
     createObserver() {
@@ -388,6 +420,10 @@
 
     onScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (this.transparentHeader) {
+        this.updateTransparentState();
+      }
 
       if ([...this.predictiveSearches].some((predictiveSearch) => predictiveSearch.isOpen)) return;
 
@@ -507,7 +543,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "max_blocks": 3,
+  "max_blocks": 12,
   "settings": [
     {
       "type": "select",
@@ -608,19 +644,49 @@
     },
     {
       "type": "header",
+      "content": "Transparent header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "default": false,
+      "label": "Enable transparent header"
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo",
+      "label": "Light logo",
+      "info": "Optional. Displayed only while the transparent homepage header is active. Use a white or light version of your normal logo."
+    },
+    {
+      "type": "range",
+      "id": "transparent_scroll_threshold",
+      "min": 20,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Return to normal background after",
+      "default": 80
+    },
+    {
+      "type": "paragraph",
+      "content": "The transparent header is fixed and applies only to the home page. Navigation and icons are white until the visitor scrolls past the selected distance, then the normal header colors return."
+    },
+    {
+      "type": "header",
       "content": "t:sections.header.settings.header__1.content"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
+      "default": "scheme-5"
     },
     {
       "type": "color_scheme",
       "id": "menu_color_scheme",
       "label": "t:sections.header.settings.menu_color_scheme.label",
-      "default": "scheme-1"
+      "default": "scheme-5"
     },
     {
       "type": "header",
@@ -686,6 +752,27 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "mega_menu_promotion",
+      "name": "Mega-menu promotion",
+      "settings": [
+        { "type": "text", "id": "menu_item_label", "label": "Menu item label", "info": "Enter the navigation label exactly as it appears in the selected menu.", "default": "Shop" },
+        { "type": "header", "content": "Promotional card 1" },
+        { "type": "image_picker", "id": "card_1_image", "label": "Image" },
+        { "type": "text", "id": "card_1_image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "card_1_title", "label": "Title", "default": "Discover the collection" },
+        { "type": "textarea", "id": "card_1_content", "label": "Content", "default": "Explore our latest arrivals and everyday essentials." },
+        { "type": "url", "id": "card_1_link", "label": "Link" },
+        { "type": "text", "id": "card_1_link_label", "label": "Link label", "default": "Shop now" },
+        { "type": "header", "content": "Promotional card 2" },
+        { "type": "image_picker", "id": "card_2_image", "label": "Image" },
+        { "type": "text", "id": "card_2_image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "card_2_title", "label": "Title", "default": "Find your favorites" },
+        { "type": "textarea", "id": "card_2_content", "label": "Content", "default": "Discover products selected for your routine." },
+        { "type": "url", "id": "card_2_link", "label": "Link" },
+        { "type": "text", "id": "card_2_link_label", "label": "Link label", "default": "Explore" }
+      ]
     }
   ]
 }

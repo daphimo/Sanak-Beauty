@@ -1,0 +1,369 @@
+{%- liquid
+  assign marquee_background = section.settings.background_color | default: '#174C45'
+  assign marquee_alternate_background = section.settings.alternate_background_color | default: '#202B26'
+  assign marquee_text_color = section.settings.text_color | default: '#FAF7EF'
+  assign marquee_separator_color = section.settings.separator_color | default: '#DCDCDC'
+  assign marquee_mobile_text_size = section.settings.mobile_text_size | default: 13
+  assign marquee_desktop_text_size = section.settings.desktop_text_size | default: 14
+  assign marquee_mobile_padding = section.settings.mobile_vertical_padding | default: 8
+  assign marquee_desktop_padding = section.settings.desktop_vertical_padding | default: 10
+  assign marquee_horizontal_spacing = section.settings.horizontal_spacing | default: 32
+  assign marquee_letter_spacing = section.settings.letter_spacing | default: 4
+  assign marquee_animation_speed = section.settings.animation_speed | default: 24
+  assign marquee_max_width = section.settings.max_width | default: 1200
+  assign marquee_font_weight = section.settings.font_weight | default: '500'
+
+  if section.settings.background_style == 'alternate'
+    assign marquee_background = marquee_alternate_background
+  endif
+-%}
+
+{{ 'custom-marquee-announcement.css' | asset_url | stylesheet_tag }}
+
+{%- if section.blocks.size > 0 -%}
+  <custom-marquee
+    class="custom-marquee{% unless section.settings.full_width %} custom-marquee--contained{% endunless %}{% if section.settings.enable_marquee %} is-animated{% endif %}{% if section.settings.enable_mobile %} custom-marquee--animate-mobile{% endif %}{% if section.settings.enable_desktop %} custom-marquee--animate-desktop{% endif %}{% if section.settings.direction == 'right' %} custom-marquee--reverse{% endif %}{% if section.settings.pause_on_hover %} custom-marquee--pause-on-hover{% endif %}"
+    role="region"
+    aria-label="Promotional announcements"
+    data-enabled="{{ section.settings.enable_marquee }}"
+    style="
+      --marquee-background: {{ marquee_background }};
+      --marquee-default-text: {{ marquee_text_color }};
+      --marquee-separator: {{ marquee_separator_color }};
+      --marquee-mobile-size: {{ marquee_mobile_text_size | divided_by: 10.0 }}rem;
+      --marquee-desktop-size: {{ marquee_desktop_text_size | divided_by: 10.0 }}rem;
+      --marquee-mobile-padding: {{ marquee_mobile_padding }}px;
+      --marquee-desktop-padding: {{ marquee_desktop_padding }}px;
+      --marquee-gap: {{ marquee_horizontal_spacing }}px;
+      --marquee-letter-spacing: {{ marquee_letter_spacing | divided_by: 100.0 }}em;
+      --marquee-duration: {{ marquee_animation_speed }}s;
+      --marquee-max-width: {{ marquee_max_width }}px;
+      --marquee-font-weight: {{ marquee_font_weight }};
+    "
+  >
+    <div class="custom-marquee__track">
+      <div class="custom-marquee__group" data-marquee-group>
+        {%- for block in section.blocks -%}
+          <div
+            class="custom-marquee__item"
+            style="--announcement-color: {{ block.settings.text_color | default: marquee_text_color }};"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.link != blank -%}
+              <a
+                class="custom-marquee__link"
+                href="{{ block.settings.link }}"
+                aria-label="{{ block.settings.text | strip_html | escape }}"
+                {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+              >
+                {{- block.settings.text -}}
+              </a>
+            {%- else -%}
+              <span>{{ block.settings.text }}</span>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.show_separator -%}
+            <span class="custom-marquee__separator custom-marquee__separator--{{ section.settings.separator_style }}" aria-hidden="true"></span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="custom-marquee__group" data-marquee-clone aria-hidden="true"></div>
+    </div>
+  </custom-marquee>
+{%- endif -%}
+
+<script>
+  if (!customElements.get('custom-marquee')) {
+    customElements.define(
+      'custom-marquee',
+      class CustomMarquee extends HTMLElement {
+        connectedCallback() {
+          this.group = this.querySelector('[data-marquee-group]');
+          this.track = this.querySelector('.custom-marquee__track');
+          if (!this.group || !this.track || this.dataset.enabled !== 'true') return;
+
+          this.renderClones = this.renderClones.bind(this);
+          this.resizeObserver = new ResizeObserver(this.renderClones);
+          this.resizeObserver.observe(this);
+          this.resizeObserver.observe(this.group);
+          this.renderClones();
+        }
+
+        disconnectedCallback() {
+          if (this.resizeObserver) this.resizeObserver.disconnect();
+        }
+
+        renderClones() {
+          const sequenceWidth = this.group.getBoundingClientRect().width;
+          if (!sequenceWidth) return;
+
+          this.querySelectorAll('[data-marquee-clone]').forEach((clone) => clone.remove());
+          const copies = Math.max(1, Math.ceil(this.clientWidth / sequenceWidth));
+
+          for (let index = 0; index < copies; index += 1) {
+            const clone = this.group.cloneNode(true);
+            clone.removeAttribute('data-marquee-group');
+            clone.setAttribute('data-marquee-clone', '');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+            clone.querySelectorAll('[data-shopify-editor-block]').forEach((element) => {
+              element.removeAttribute('data-shopify-editor-block');
+            });
+            clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach((element) => {
+              element.setAttribute('tabindex', '-1');
+            });
+            this.track.appendChild(clone);
+          }
+
+          this.style.setProperty('--marquee-sequence-width', `${sequenceWidth}px`);
+          this.classList.add('is-ready');
+        }
+      }
+    );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Marquee announcement bar",
+  "class": "custom-marquee-announcement-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#174C45"
+    },
+    {
+      "type": "color",
+      "id": "alternate_background_color",
+      "label": "Alternate background color",
+      "default": "#202B26"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "alternate", "label": "Alternate" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Default text color",
+      "default": "#FAF7EF"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "Separator color",
+      "default": "#DCDCDC"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "label": "Letter spacing",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "horizontal_spacing",
+      "min": 12,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Spacing between announcements",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Marquee behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_marquee",
+      "label": "Enable marquee animation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Animation cycle duration",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Scroll direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover or focus",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile",
+      "label": "Animate on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop",
+      "label": "Animate on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Show separators",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "separator_style",
+      "label": "Separator style",
+      "options": [
+        { "value": "dot", "label": "Dot" },
+        { "value": "line", "label": "Vertical line" },
+        { "value": "star", "label": "Star" }
+      ],
+      "default": "dot"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full-width bar",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 600,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum content width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile text size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "desktop_vertical_padding",
+      "min": 6,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop vertical padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_vertical_padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile vertical padding",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Announcement text",
+          "default": "Free shipping on orders over ₹999"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#FAF7EF"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open link in a new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee announcement bar",
+      "blocks": [
+        { "type": "announcement", "settings": { "text": "Free shipping on orders over ₹999" } },
+        { "type": "announcement", "settings": { "text": "Discover our latest collection" } },
+        { "type": "announcement", "settings": { "text": "Get 10% off your first order" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

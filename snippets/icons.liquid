@@ -8,8 +8,20 @@
 {% enddoc %}
 
 {%- liquid
-  assign icon_asset = 'icon-' | append: icon | append: '.svg'
+  case icon
+    when 'arrow-right'
+      assign icon_asset = 'icon-arrow.svg'
+    when 'arrow-left'
+      assign icon_asset = 'icon-arrow.svg'
+    when 'cart-bag'
+      assign icon_asset = 'icon-cart-bag.svg'
+    else
+      assign icon_asset = 'icon-' | append: icon | append: '.svg'
+  endcase
   assign icon_class = 'sanak-icon'
+  if icon == 'arrow-left'
+    assign icon_class = icon_class | append: ' sanak-icon--arrow-left'
+  endif
   if class != blank
     assign icon_class = icon_class | append: ' ' | append: class
   endif

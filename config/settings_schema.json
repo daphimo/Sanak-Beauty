@@ -620,6 +620,50 @@
     ]
   },
   {
+    "name": "Product card behavior",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_card_image_size",
+        "label": "Image size",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "portrait", "label": "Portrait" },
+          { "value": "square", "label": "Square" },
+          { "value": "landscape", "label": "Landscape" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "select",
+        "id": "product_card_gallery_type",
+        "label": "Gallery behavior",
+        "options": [
+          { "value": "static", "label": "Static image with zoom" },
+          { "value": "secondary", "label": "Second image on hover" },
+          { "value": "auto", "label": "Automatic images on hover" }
+        ],
+        "default": "secondary"
+      },
+      {
+        "type": "range",
+        "id": "product_card_gallery_interval",
+        "label": "Automatic image interval",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "unit": "s",
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_quick_add",
+        "label": "Enable quick add on product cards",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.collection_cards.name",
     "settings": [
       {

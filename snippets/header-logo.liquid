@@ -1,0 +1,45 @@
+{% doc %}
+  Renders the normal header logo and an optional light transparent-header variant.
+
+  @param {image} transparent_logo - Optional light logo selected in the header settings.
+  @param {boolean} transparent_header_active - Whether homepage transparency is active.
+  @param {string} sizes - Responsive image sizes value.
+  @param {string} widths - Responsive image widths value.
+  @param {string} [motion_class] - Optional motion-reduction class suffix.
+{% enddoc %}
+
+{%- liquid
+  assign logo_alt = settings.logo.alt | default: shop.name | escape
+  assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio
+-%}
+
+<div class="header__heading-logo-wrapper{% if transparent_header_active and transparent_logo != blank %} header__heading-logo-wrapper--has-transparent{% endif %}">
+  {{
+    settings.logo
+    | image_url: width: 600
+    | image_tag:
+      class: 'header__heading-logo header__heading-logo--default' | append: motion_class,
+      widths: widths,
+      height: logo_height,
+      width: settings.logo_width,
+      alt: logo_alt,
+      sizes: sizes,
+      preload: true
+  }}
+
+  {%- if transparent_header_active and transparent_logo != blank -%}
+    {%- assign transparent_logo_height = settings.logo_width | divided_by: transparent_logo.aspect_ratio -%}
+    {{
+      transparent_logo
+      | image_url: width: 600
+      | image_tag:
+        class: 'header__heading-logo header__heading-logo--transparent' | append: motion_class,
+        widths: widths,
+        height: transparent_logo_height,
+        width: settings.logo_width,
+        alt: logo_alt,
+        sizes: sizes,
+        preload: true
+    }}
+  {%- endif -%}
+</div>

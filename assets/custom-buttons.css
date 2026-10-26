@@ -1,0 +1,71 @@
+.cust-button {
+  --cust-button-bg: #174c45;
+  --cust-button-color: #faf7ef;
+  --cust-button-border: #174c45;
+  --cust-button-border-width: 1px;
+  --cust-button-radius: 0;
+  display: inline-flex;
+  min-height: 4.6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.2rem 2.2rem;
+  border: var(--cust-button-border-width) solid var(--cust-button-border);
+  border-radius: var(--cust-button-radius);
+  background: var(--cust-button-bg);
+  color: var(--cust-button-color);
+  font: 600 1.4rem/1.2 var(--font-body-family);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.cust-button--secondary {
+  background: var(--cust-button-bg, transparent);
+}
+
+.cust-button--link {
+  min-height: auto;
+  padding: 1rem 0;
+  border-color: transparent;
+  background: transparent;
+}
+
+.cust-button--small {
+  min-height: 4rem;
+  padding: 1rem 1.8rem;
+  font-size: 1.3rem;
+}
+
+.cust-button--large {
+  min-height: 5.2rem;
+  padding: 1.5rem 2.8rem;
+  font-size: 1.5rem;
+}
+
+.cust-button:hover {
+  filter: brightness(0.92);
+}
+
+.cust-button--link:hover {
+  filter: none;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+.cust-button:focus-visible {
+  outline: 0.2rem solid currentColor;
+  outline-offset: 0.3rem;
+}
+
+.cust-button .sanak-icon,
+.cust-button .sanak-icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cust-button {
+    transition: none;
+  }
+}

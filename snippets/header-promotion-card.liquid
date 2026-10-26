@@ -1,0 +1,33 @@
+{% doc %}
+  Renders one header promotional card.
+  @param {image} [image] - Promotional image.
+  @param {string} [image_alt] - Optional image alt override.
+  @param {string} [title] - Card title.
+  @param {string} [content] - Card description.
+  @param {string} [link] - Card destination.
+  @param {string} [link_label] - Card action label.
+  @example
+  {% render 'header-promotion-card', image: block.settings.card_1_image, title: block.settings.card_1_title %}
+{% enddoc %}
+
+{%- assign alt = image_alt | default: image.alt -%}
+{%- capture card_content -%}
+  {%- if image != blank -%}
+    <div class="mega-menu-promotion__media">
+      {{ image | image_url: width: 900 | image_tag: widths: '240, 360, 480, 720, 900', sizes: '(min-width: 990px) 22vw, 80vw', loading: 'lazy', alt: alt }}
+    </div>
+  {%- endif -%}
+  <div class="mega-menu-promotion__body">
+    {%- if title != blank -%}<p class="mega-menu-promotion__title">{{ title | escape }}</p>{%- endif -%}
+    {%- if content != blank -%}<p class="mega-menu-promotion__text">{{ content | escape }}</p>{%- endif -%}
+    {%- if link_label != blank and link != blank -%}
+      <span class="mega-menu-promotion__link">{{ link_label | escape }} {% render 'icons', icon: 'arrow-right' %}</span>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- if link != blank -%}
+  <a class="mega-menu-promotion" href="{{ link }}">{{ card_content }}</a>
+{%- else -%}
+  <div class="mega-menu-promotion">{{ card_content }}</div>
+{%- endif -%}

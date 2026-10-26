@@ -12,13 +12,15 @@
   "type": "header",
   "sections": {
     "announcement-bar": {
-      "type": "announcement-bar",
+      "type": "custom-marquee-announcement",
       "blocks": {
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "link": ""
+            "text": "Free shipping on orders over ₹999",
+            "text_color": "#FAF7EF",
+            "link": "",
+            "open_new_tab": false
           }
         }
       },
@@ -26,13 +28,28 @@
         "announcement-bar-0"
       ],
       "settings": {
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "enable_country_selector": false,
-        "enable_language_selector": false
+        "background_color": "#174C45",
+        "alternate_background_color": "#202B26",
+        "background_style": "primary",
+        "text_color": "#FAF7EF",
+        "separator_color": "#DCDCDC",
+        "font_weight": "500",
+        "letter_spacing": 4,
+        "horizontal_spacing": 32,
+        "enable_marquee": true,
+        "animation_speed": 24,
+        "direction": "left",
+        "pause_on_hover": true,
+        "enable_mobile": true,
+        "enable_desktop": true,
+        "show_separator": true,
+        "separator_style": "dot",
+        "full_width": true,
+        "max_width": 1200,
+        "desktop_text_size": 14,
+        "mobile_text_size": 13,
+        "desktop_vertical_padding": 10,
+        "mobile_vertical_padding": 8
       }
     },
     "header": {
@@ -44,8 +61,10 @@
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
+        "enable_transparent_header": false,
+        "transparent_scroll_threshold": 80,
+        "color_scheme": "scheme-5",
+        "menu_color_scheme": "scheme-5",
         "enable_country_selector": true,
         "enable_language_selector": true,
         "margin_bottom": 0,

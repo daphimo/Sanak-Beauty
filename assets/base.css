@@ -365,14 +365,14 @@ h5,
 
 h6,
 .h6 {
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgb(var(--color-foreground));
   margin-block-start: 1.67em;
   margin-block-end: 1.67em;
 }
 
 blockquote {
   font-style: italic;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
   border-left: 0.2rem solid rgba(var(--color-foreground), 0.2);
   padding-left: 1rem;
 }
@@ -515,7 +515,7 @@ h6:empty {
 }
 
 .link--text:hover {
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
 }
 
 .link-with-icon {
@@ -1491,7 +1491,7 @@ details[open] > .share-button__fallback {
 }
 
 .share-button__fallback button:hover {
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
 }
 
 .share-button__fallback button:hover .svg-wrapper {
@@ -1643,7 +1643,7 @@ details[open] > .share-button__fallback {
   font-style: var(--font-body-style);
   font-weight: var(--font-body-weight);
   font-size: 1.2rem;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
 }
 
 .field:hover.field:after,
@@ -1746,7 +1746,7 @@ details[open] > .share-button__fallback {
   pointer-events: none;
   position: absolute;
   transition: top var(--duration-short) ease, font-size var(--duration-short) ease;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
   letter-spacing: 0.1rem;
   line-height: 1.5;
 }
@@ -2456,13 +2456,9 @@ input[type='checkbox'] {
   word-break: break-word;
 }
 
-.header__heading-link:hover .h2 {
-  color: rgb(var(--color-foreground));
-}
-
 .header__heading-link .h2 {
   line-height: 1;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgb(var(--color-foreground));
 }
 
 .header__heading-logo {
@@ -2555,9 +2551,39 @@ input[type='checkbox'] {
   content: none;
 }
 
-.header__icon:hover .icon,
 .modal__close-button:hover .icon {
   transform: scale(1.07);
+}
+
+.header__icons .header__icon {
+  transition: color var(--duration-short) ease;
+}
+
+.header__icons .header__icon:hover,
+.header__icons .header__icon:focus-visible,
+.header__icon--wishlist.is-active,
+.header__icon--wishlist:has(.sanak-wishlist-count:not([data-count='0'])) {
+  color: #174c45;
+}
+
+.header__icons .header__icon .svg-wrapper,
+.header__icons .header__icon .sanak-icon {
+  width: 4.4rem;
+  height: 4.4rem;
+}
+
+.header__icons .header__icon .sanak-icon svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.header__icon.header__icon--search .icon-search,
+.header__icon.header__icon--account .icon-account,
+.header__icon.header__icon--cart .icon-cart,
+.header__icon.header__icon--cart .icon-cart-empty {
+  width: 2rem;
+  height: 2rem;
+  fill: currentColor;
 }
 
 .header__icon .icon {
@@ -2834,28 +2860,33 @@ details[open] > .header__submenu {
 .header__menu-item {
   padding: 1.2rem;
   text-decoration: none;
-  color: rgba(var(--color-foreground), 0.75);
-}
-
-.header__menu-item:hover {
   color: rgb(var(--color-foreground));
 }
 
 .header__menu-item span {
-  transition: text-decoration var(--duration-short) ease;
+  position: relative;
+  display: inline-block;
 }
 
-.header__menu-item:hover span {
-  text-decoration: underline;
-  text-underline-offset: 0.3rem;
+.header__menu-item span::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.3rem;
+  left: 0;
+  height: 1px;
+  background: #174c45;
+  content: '';
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 250ms ease;
 }
 
-details[open] > .header__menu-item {
-  text-decoration: underline;
-}
-
-details[open]:hover > .header__menu-item {
-  text-decoration-thickness: 0.2rem;
+.header__menu-item:hover span::after,
+.header__menu-item:focus-visible span::after,
+details[open] > .header__menu-item span::after,
+.header__active-menu-item::after,
+.list-menu__item--active > span::after {
+  transform: scaleX(1);
 }
 
 details[open] > .header__menu-item .icon-caret {
@@ -2863,10 +2894,13 @@ details[open] > .header__menu-item .icon-caret {
 }
 
 .header__active-menu-item {
-  transition: text-decoration-thickness var(--duration-short) ease;
   color: rgb(var(--color-foreground));
-  text-decoration: underline;
-  text-underline-offset: 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__menu-item span::after {
+    transition: none;
+  }
 }
 
 .header__menu-item:hover .header__active-menu-item {
@@ -2905,10 +2939,6 @@ details[open] > .header__menu-item .icon-caret {
 .header__submenu .header__menu-item {
   justify-content: space-between;
   padding: 0.8rem 2rem;
-}
-
-.header__submenu .header__menu-item:hover {
-  text-decoration-line: underline;
 }
 
 .header__menu-item .icon-caret {

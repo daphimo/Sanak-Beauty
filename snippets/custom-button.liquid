@@ -1,0 +1,40 @@
+{% doc %}
+  Renders a reusable linked call-to-action.
+  @param {string} label - Visible button label.
+  @param {string} link - Button destination.
+  @param {string} [variant] - primary, secondary, or link.
+  @param {color} [background] - Button background color.
+  @param {color} [text_color] - Button text color.
+  @param {color} [border_color] - Button border color.
+  @param {number} [border_width] - Border width in pixels.
+  @param {number} [border_radius] - Border radius in pixels.
+  @param {string} [size] - small, medium, or large.
+  @param {boolean} [show_arrow] - Displays an arrow icon.
+  @param {boolean} [new_tab] - Opens the link in a new tab.
+  @param {string} [custom_class] - Additional CSS class.
+  @example
+  {% render 'custom-button', label: 'Shop now', link: routes.all_products_collection_url, variant: 'primary', show_arrow: true %}
+{% enddoc %}
+
+{%- if label != blank and link != blank -%}
+  {%- liquid
+    assign button_variant = variant | default: 'primary'
+    assign button_size = size | default: 'medium'
+    assign button_background = background | default: '#174C45'
+    assign button_text = text_color | default: '#FAF7EF'
+    assign button_border = border_color | default: '#174C45'
+    assign button_border_width = border_width | default: 1
+    assign button_radius = border_radius | default: 0
+  -%}
+  <a
+    class="cust-button cust-button--{{ button_variant }} cust-button--{{ button_size }}{% if custom_class != blank %} {{ custom_class }}{% endif %}"
+    href="{{ link }}"
+    style="--cust-button-bg: {{ button_background }}; --cust-button-color: {{ button_text }}; --cust-button-border: {{ button_border }}; --cust-button-border-width: {{ button_border_width }}px; --cust-button-radius: {{ button_radius }}px;"
+    {% if new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+  >
+    <span>{{ label | escape }}</span>
+    {%- if show_arrow -%}
+      {%- render 'icons', icon: 'arrow-right', class: 'cust-button__icon' -%}
+    {%- endif -%}
+  </a>
+{%- endif -%}

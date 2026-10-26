@@ -1,0 +1,235 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'custom-buttons.css' | asset_url | stylesheet_tag }}
+{{ 'custom-featured-collection.css' | asset_url | stylesheet_tag }}
+
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<script src="{{ 'custom-featured-collection.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign section_title = section.settings.title
+  if section.settings.title_override != blank
+    assign section_title = section.settings.title_override
+  endif
+
+  assign selected_collection = section.settings.collection
+  assign product_count = 0
+  if selected_collection != blank
+    assign product_count = selected_collection.products.size | at_most: section.settings.products_to_show
+  endif
+
+  assign slider_available = false
+  if section.settings.enable_slider and product_count > 1
+    assign slider_available = true
+  endif
+-%}
+
+<section
+  id="CustomFeaturedCollection-{{ section.id }}"
+  class="cust-featured splide"
+  data-cust-featured
+  data-section-id="{{ section.id }}"
+  data-slider-enabled="{{ slider_available }}"
+  data-per-page-desktop="{{ section.settings.slides_desktop }}"
+  data-per-page-tablet="{{ section.settings.slides_tablet }}"
+  data-per-page-mobile="{{ section.settings.slides_mobile }}"
+  data-gap="{{ section.settings.card_gap }}"
+  data-speed="{{ section.settings.transition_speed }}"
+  data-behavior="{{ section.settings.slider_behavior }}"
+  data-drag="{{ section.settings.enable_drag }}"
+  data-show-navigation="{{ section.settings.show_navigation }}"
+  data-mobile-navigation="{{ section.settings.show_mobile_navigation }}"
+  data-splide-js="{{ 'splide.min.js' | asset_url }}"
+  data-splide-css="{{ 'splide-core.min.css' | asset_url }}"
+  style="
+    --cust-featured-background: {{ section.settings.background_color }};
+    --cust-featured-text: {{ section.settings.text_color }};
+    --cust-featured-title: {{ section.settings.title_color }};
+    --cust-featured-title-size: {{ section.settings.title_size }}px;
+    --cust-featured-title-size-mobile: {{ section.settings.title_size_mobile }}px;
+    --cust-featured-padding-top: {{ section.settings.padding_top }}px;
+    --cust-featured-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --cust-featured-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --cust-featured-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --cust-featured-header-gap: {{ section.settings.header_spacing }}px;
+    --cust-featured-card-gap: {{ section.settings.card_gap }}px;
+    --cust-featured-button-margin: {{ section.settings.button_margin_top }}px;
+    --cust-featured-columns-desktop: {{ section.settings.slides_desktop }};
+    --cust-featured-columns-tablet: {{ section.settings.slides_tablet }};
+    --cust-featured-columns-mobile: {{ section.settings.slides_mobile }};
+    --cust-featured-button-background: {{ section.settings.button_background }};
+    --cust-featured-button-text: {{ section.settings.button_text_color }};
+  "
+>
+  <div class="cust-featured__inner page-width">
+    <div class="cust-featured__header">
+      {%- if section_title != blank -%}
+        <h2 class="cust-featured__title">{{ section_title | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.show_navigation -%}
+        <div class="splide__arrows cust-featured__arrows{% unless slider_available %} is-hidden{% endunless %}{% unless section.settings.show_mobile_navigation %} cust-featured__arrows--desktop-only{% endunless %}">
+          <button class="splide__arrow splide__arrow--prev cust-featured__arrow" type="button" aria-label="Previous products">
+            {%- render 'icons', icon: 'arrow-left' -%}
+          </button>
+          <button class="splide__arrow splide__arrow--next cust-featured__arrow" type="button" aria-label="Next products">
+            {%- render 'icons', icon: 'arrow-right' -%}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="splide__track cust-featured__track">
+      <ul class="splide__list cust-featured__list" role="list">
+        {%- if product_count > 0 -%}
+          {%- assign skip_card_product_styles = false -%}
+          {%- for product in selected_collection.products limit: section.settings.products_to_show -%}
+            <li class="splide__slide cust-featured__slide" id="CustomFeaturedSlide-{{ section.id }}-{{ product.id }}">
+              {%- render 'card-product',
+                card_product: product,
+                media_aspect_ratio: section.settings.image_ratio,
+                image_shape: 'default',
+                show_secondary_image: section.settings.show_secondary_image,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating,
+                lazy_load: true,
+                skip_styles: skip_card_product_styles,
+                quick_add: section.settings.quick_add,
+                section_id: section.id,
+                product_view_context: 'collection'
+              -%}
+            </li>
+            {%- assign skip_card_product_styles = true -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+
+    {%- if product_count == 0 -%}
+      <div class="cust-featured__empty" role="status">
+        {%- if selected_collection == blank -%}
+          Select a collection to display its products.
+        {%- else -%}
+          This collection does not contain any products yet.
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="cust-featured__button">
+      {%- if selected_collection != blank -%}
+        {%- render 'custom-button',
+          label: section.settings.button_label,
+          link: selected_collection.url,
+          variant: 'primary',
+          background: section.settings.button_background,
+          text_color: section.settings.button_text_color,
+          border_color: section.settings.button_background,
+          show_arrow: false
+        -%}
+      {%- else -%}
+        <span class="cust-button cust-featured__button-disabled" aria-disabled="true">
+          <span>{{ section.settings.button_label | escape }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom featured",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Collection" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 24, "step": 1, "default": 8 },
+    { "type": "text", "id": "title", "label": "Section title", "default": "Featured collection" },
+    { "type": "text", "id": "title_override", "label": "Optional title override", "info": "When entered, this replaces the section title above." },
+    { "type": "text", "id": "button_label", "label": "Shop all button label", "default": "Shop all" },
+
+    { "type": "header", "content": "Product cards" },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "adapt"
+    },
+    { "type": "checkbox", "id": "show_secondary_image", "label": "Show second image on hover", "default": true },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "checkbox", "id": "show_rating", "label": "Show product rating", "default": false },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "label": "Quick add",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "none"
+    },
+
+    { "type": "header", "content": "Slider" },
+    { "type": "checkbox", "id": "enable_slider", "label": "Enable slider", "default": true },
+    { "type": "range", "id": "slides_desktop", "label": "Desktop products per view", "min": 1, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "slides_tablet", "label": "Tablet products per view", "min": 1, "max": 4, "step": 1, "default": 3 },
+    {
+      "type": "select",
+      "id": "slides_mobile",
+      "label": "Mobile products per view",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    { "type": "range", "id": "card_gap", "label": "Product gap", "min": 8, "max": 48, "step": 4, "unit": "px", "default": 20 },
+    { "type": "range", "id": "transition_speed", "label": "Transition speed", "min": 200, "max": 1000, "step": 50, "unit": "ms", "default": 500 },
+    {
+      "type": "select",
+      "id": "slider_behavior",
+      "label": "End behavior",
+      "options": [
+        { "value": "rewind", "label": "Rewind" },
+        { "value": "loop", "label": "Loop" },
+        { "value": "stop", "label": "Stop" }
+      ],
+      "default": "rewind"
+    },
+    { "type": "checkbox", "id": "enable_drag", "label": "Enable dragging", "default": true },
+    { "type": "checkbox", "id": "show_navigation", "label": "Show navigation buttons", "default": true },
+    { "type": "checkbox", "id": "show_mobile_navigation", "label": "Show navigation on mobile", "default": true },
+
+    { "type": "header", "content": "Colors and typography" },
+    { "type": "color", "id": "background_color", "label": "Section background", "default": "#FAF7EF" },
+    { "type": "color", "id": "text_color", "label": "Section text", "default": "#202B26" },
+    { "type": "color", "id": "title_color", "label": "Title", "default": "#202B26" },
+    { "type": "color", "id": "button_background", "label": "Button background", "default": "#174C45" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#FAF7EF" },
+    { "type": "range", "id": "title_size", "label": "Desktop title size", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 40 },
+    { "type": "range", "id": "title_size_mobile", "label": "Mobile title size", "min": 22, "max": 44, "step": 2, "unit": "px", "default": 30 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Desktop top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Desktop bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Mobile top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Mobile bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "header_spacing", "label": "Header to products spacing", "min": 12, "max": 64, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "button_margin_top", "label": "Shop all top margin", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [{ "name": "Custom featured" }]
+}
+{% endschema %}
