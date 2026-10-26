@@ -154,7 +154,7 @@
           "settings": {
             "image": "shopify://shop_images/1.jpg",
             "image_position": "center center",
-            "image_overlay": false,
+            "image_overlay": true,
             "image_overlay_color": "#202B26",
             "image_overlay_opacity": 15,
             "eyebrow": "A LITTLE MORE YOU",
@@ -184,7 +184,7 @@
           "settings": {
             "image": "shopify://shop_images/2.jpg",
             "image_position": "center center",
-            "image_overlay": false,
+            "image_overlay": true,
             "image_overlay_color": "#202B26",
             "image_overlay_opacity": 15,
             "eyebrow": "A LITTLE MORE YOU",
