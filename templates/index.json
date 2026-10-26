@@ -113,7 +113,7 @@
       "settings": {
         "collection": "frontpage",
         "products_to_show": 5,
-        "title": "Featured collection",
+        "title": "Featured Collection",
         "title_override": "",
         "button_label": "Shop all",
         "image_ratio": "adapt",
