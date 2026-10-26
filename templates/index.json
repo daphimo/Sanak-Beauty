@@ -16,8 +16,8 @@
           "type": "title",
           "settings": {
             "heading": "Makeup for your <em><strong>kind</strong></em> of beautiful.",
-            "heading_color": "#FFFFFF",
-            "highlight_color": "#FFFFFF",
+            "heading_color": "#ffffff",
+            "highlight_color": "#ffffff",
             "desktop_size": 76,
             "mobile_size": 48,
             "font_weight": "400",
@@ -38,8 +38,8 @@
             "button_1_arrow": true,
             "button_1_new_tab": false,
             "button_1_background": "rgba(0,0,0,0)",
-            "button_1_text": "#FAF7EF",
-            "button_1_border": "#FAF7EF",
+            "button_1_text": "#faf7ef",
+            "button_1_border": "#faf7ef",
             "button_1_radius": 30,
             "button_2_enabled": true,
             "button_2_label": "Meet Sanak",
@@ -48,8 +48,8 @@
             "button_2_arrow": true,
             "button_2_new_tab": false,
             "button_2_background": "rgba(0,0,0,0)",
-            "button_2_text": "#FAF7EF",
-            "button_2_border": "#FAF7EF",
+            "button_2_text": "#faf7ef",
+            "button_2_border": "#faf7ef",
             "button_2_radius": 30
           }
         }
@@ -61,8 +61,8 @@
       "name": "Custom static hero",
       "settings": {
         "desktop_image": "shopify://shop_images/Hero_Visual_a5ae1f72-158d-42ab-9940-769b53504acc.jpg",
-        "background_color": "#FAF7EF",
-        "default_text_color": "#202B26",
+        "background_color": "#faf7ef",
+        "default_text_color": "#202b26",
         "content_position": "bottom-right",
         "content_alignment": "left",
         "content_width": 700,
@@ -72,7 +72,7 @@
         "mobile_vertical_padding": 50,
         "mobile_horizontal_padding": 24,
         "enable_overlay": true,
-        "overlay_color": "#202B26",
+        "overlay_color": "#202b26",
         "overlay_intensity": 30,
         "desktop_height_mode": "custom",
         "desktop_height": 650,
@@ -105,11 +105,11 @@
         "enable_drag": true,
         "show_navigation": true,
         "show_mobile_navigation": true,
-        "background_color": "#FAF7EF",
-        "text_color": "#202B26",
-        "title_color": "#202B26",
-        "button_background": "#174C45",
-        "button_text_color": "#FAF7EF",
+        "background_color": "#faf7ef",
+        "text_color": "#202b26",
+        "title_color": "#202b26",
+        "button_background": "#174c45",
+        "button_text_color": "#faf7ef",
         "title_size": 40,
         "title_size_mobile": 30,
         "padding_top": 80,
@@ -129,7 +129,7 @@
             "image": "shopify://shop_images/1.jpg",
             "image_position": "center center",
             "image_overlay": true,
-            "image_overlay_color": "#202B26",
+            "image_overlay_color": "#202b26",
             "image_overlay_opacity": 15,
             "eyebrow": "A LITTLE MORE YOU",
             "title": "Beauty that feels like you.",
@@ -141,16 +141,16 @@
             "cta_link": "",
             "cta_style": "primary",
             "background_image": "shopify://shop_images/2.jpg",
-            "background_color": "#FAF7EF",
-            "background_overlay_color": "#FAF7EF",
+            "background_color": "#faf7ef",
+            "background_overlay_color": "#faf7ef",
             "background_overlay_opacity": 70,
-            "eyebrow_color": "#174C45",
-            "title_color": "#202B26",
-            "description_color": "#202B26",
-            "highlight_color": "#174C45",
-            "cta_background": "#174C45",
-            "cta_text_color": "#FAF7EF",
-            "cta_border_color": "#174C45"
+            "eyebrow_color": "#174c45",
+            "title_color": "#202b26",
+            "description_color": "#202b26",
+            "highlight_color": "#174c45",
+            "cta_background": "#174c45",
+            "cta_text_color": "#faf7ef",
+            "cta_border_color": "#174c45"
           }
         },
         "slide_k4pfPY": {
@@ -159,7 +159,7 @@
             "image": "shopify://shop_images/2.jpg",
             "image_position": "center center",
             "image_overlay": true,
-            "image_overlay_color": "#202B26",
+            "image_overlay_color": "#202b26",
             "image_overlay_opacity": 15,
             "eyebrow": "A LITTLE MORE YOU",
             "title": "Beauty that feels like you.",
@@ -171,16 +171,16 @@
             "cta_link": "",
             "cta_style": "primary",
             "background_image": "shopify://shop_images/1.jpg",
-            "background_color": "#FAF7EF",
-            "background_overlay_color": "#FAF7EF",
+            "background_color": "#faf7ef",
+            "background_overlay_color": "#faf7ef",
             "background_overlay_opacity": 70,
-            "eyebrow_color": "#174C45",
-            "title_color": "#202B26",
-            "description_color": "#202B26",
-            "highlight_color": "#174C45",
-            "cta_background": "#174C45",
-            "cta_text_color": "#FAF7EF",
-            "cta_border_color": "#174C45"
+            "eyebrow_color": "#174c45",
+            "title_color": "#202b26",
+            "description_color": "#202b26",
+            "highlight_color": "#174c45",
+            "cta_background": "#174c45",
+            "cta_text_color": "#faf7ef",
+            "cta_border_color": "#174c45"
           }
         }
       },
@@ -205,11 +205,79 @@
         "show_arrows": true,
         "show_pagination": true
       }
+    },
+    "custom_ugc_videos_VxVMCH": {
+      "type": "custom-ugc-videos",
+      "blocks": {
+        "video_Wbh7ra": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/3763974-uhd_2160_3840_25fps.mp4",
+            "title": "A Sanak ritual",
+            "product": "01-quad"
+          }
+        },
+        "video_bWJLfi": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/7049300-uhd_2160_3840_30fps.mp4",
+            "title": "A Sanak ritual",
+            "product": "02-quad"
+          }
+        },
+        "video_jekpKw": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/6787267-uhd_2160_3840_30fps.mp4",
+            "title": "A Sanak ritual",
+            "product": "03-quad"
+          }
+        },
+        "video_XwkpWF": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/7957631-uhd_2160_3840_30fps.mp4",
+            "title": "A Sanak ritual",
+            "product": "01-quad"
+          }
+        },
+        "video_EXWHag": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/6446086-hd_1080_1920_25fps.mp4",
+            "title": "A Sanak ritual",
+            "product": "02-quad"
+          }
+        }
+      },
+      "block_order": [
+        "video_Wbh7ra",
+        "video_bWJLfi",
+        "video_jekpKw",
+        "video_XwkpWF",
+        "video_EXWHag"
+      ],
+      "name": "Sanak UGC videos",
+      "settings": {
+        "eyebrow": "Seen on you",
+        "heading": "Real rituals, real results",
+        "text": "<p>Discover how the Sanak community makes every ritual their own.</p>",
+        "modal_label": "Community videos",
+        "background_color": "#FAF7EF",
+        "text_color": "#202B26",
+        "accent_color": "#174C45",
+        "columns_desktop": 4,
+        "card_gap": 20,
+        "loop_videos": true,
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
     "custom_static_hero_9QWFpH",
     "custom_featured_collection_JXrkV9",
-    "custom_split_image_content_slider_yDgWYr"
+    "custom_split_image_content_slider_yDgWYr",
+    "custom_ugc_videos_VxVMCH"
   ]
 }

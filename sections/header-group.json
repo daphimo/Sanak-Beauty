@@ -54,6 +54,29 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_promotion_yQHbAK": {
+          "type": "mega_menu_promotion",
+          "settings": {
+            "menu_item_label": "Catalog",
+            "card_1_image": "shopify://shop_images/01Quad.jpg",
+            "card_1_image_alt": "01 Quad",
+            "card_1_title": "Discover the collection",
+            "card_1_content": "Explore our latest arrivals and everyday essentials.",
+            "card_1_link": "shopify://products/01-quad",
+            "card_1_link_label": "Shop now",
+            "card_2_image": "shopify://shop_images/02Quad.jpg",
+            "card_2_image_alt": "02 Quad",
+            "card_2_title": "Find your favorites",
+            "card_2_content": "Discover products selected for your routine.",
+            "card_2_link": "shopify://products/02-quad",
+            "card_2_link_label": "Explore"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_promotion_yQHbAK"
+      ],
       "settings": {
         "logo_position": "middle-center",
         "normal_logo": "shopify://shop_images/SanakBeautyLogo250x50px_b9f6c6c1-1ba1-47ff-94cc-840261c77648.png",
@@ -78,7 +101,14 @@
     },
     "mobile-dock": {
       "type": "mobile-dock",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Mobile navigation",
+        "menu_label": "Menu",
+        "shop_label": "Shop",
+        "video_label": "Videos",
+        "wishlist_label": "Wishlist",
+        "cart_label": "Cart"
+      }
     }
   },
   "order": [
