@@ -6,3 +6,6 @@
 @media screen and (max-width:749px){.split-slider__content{position:absolute;display:flex}.split-slider__content.is-active{position:relative;display:flex}}
 @media screen and (max-width:749px){.split-slider,.split-slider__layout,.split-slider__visual,.split-slider__content-panel{width:100%;max-width:100%;min-width:0}.split-slider__content{width:100%;padding:clamp(3.2rem,10vw,4.8rem) clamp(1.8rem,6vw,2.8rem);overflow-wrap:anywhere}.split-slider__content-inner,.split-slider__title,.split-slider__description{max-width:100%}.split-slider__cta{max-width:100%}}
 @media screen and (max-width:374px){.split-slider__content{min-height:36rem}.split-slider__cta{width:100%}.split-slider__arrows{gap:.5rem}.split-slider__pagination{display:none}}
+.split-slider__content{padding:clamp(2.4rem,5vw,7rem)}
+.split-slider__content-inner{width:min(100%,58rem);padding:clamp(2.4rem,4vw,5rem);border:1px solid rgba(32,43,38,.16);background:var(--content-box-bg,var(--split-ivory));box-shadow:0 1.6rem 4rem rgba(32,43,38,.12);overflow-wrap:anywhere}
+@media screen and (max-width:749px){.split-slider__content{padding:2.4rem 1.6rem}.split-slider__content-inner{padding:2.4rem}}

@@ -1,0 +1,102 @@
+{{ 'custom-ugc-videos.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-ugc-videos.js' | asset_url }}" defer="defer"></script>
+
+<section
+  class="sanak-ugc"
+  data-sanak-ugc
+  style="--ugc-bg: {{ section.settings.background_color }}; --ugc-text: {{ section.settings.text_color }}; --ugc-accent: {{ section.settings.accent_color }}; --ugc-card-gap: {{ section.settings.card_gap }}px; --ugc-columns: {{ section.settings.columns_desktop }}; --ugc-padding-top: {{ section.settings.padding_top }}px; --ugc-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="sanak-ugc__inner page-width">
+    <header class="sanak-ugc__header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="sanak-ugc__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="sanak-ugc__text rte">{{ section.settings.text }}</div>{%- endif -%}
+      </div>
+      {%- if section.blocks.size > section.settings.columns_desktop -%}
+        <div class="sanak-ugc__arrows">
+          <button type="button" data-ugc-prev aria-label="Previous videos">{% render 'icons', icon: 'arrow-left' %}</button>
+          <button type="button" data-ugc-next aria-label="Next videos">{% render 'icons', icon: 'arrow-right' %}</button>
+        </div>
+      {%- endif -%}
+    </header>
+
+    <div class="sanak-ugc__track" data-ugc-track tabindex="0" role="region" aria-label="{{ section.settings.heading | escape }}">
+      <ul class="sanak-ugc__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign video = block.settings.video -%}
+          <li class="sanak-ugc__card" {{ block.shopify_attributes }}>
+            <button type="button" class="sanak-ugc__open" data-ugc-open="{{ forloop.index0 }}"{% if video == blank %} disabled{% endif %} aria-label="Play {{ block.settings.title | default: section.settings.heading | escape }}">
+              <span class="sanak-ugc__media">
+                {%- if block.settings.poster != blank -%}
+                  {{ block.settings.poster | image_url: width: 900 | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 72vw, 25vw', loading: 'lazy', alt: block.settings.title, class: 'sanak-ugc__poster' }}
+                {%- elsif video.preview_image != blank -%}
+                  {{ video.preview_image | image_url: width: 900 | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 72vw, 25vw', loading: 'lazy', alt: block.settings.title, class: 'sanak-ugc__poster' }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'sanak-ugc__poster placeholder-svg' }}
+                {%- endif -%}
+                <span class="sanak-ugc__play" aria-hidden="true">{{ 'icon-play.svg' | inline_asset_content }}</span>
+              </span>
+              {%- if block.settings.title != blank -%}<span class="sanak-ugc__title">{{ block.settings.title | escape }}</span>{%- endif -%}
+            </button>
+            {%- if block.settings.product != blank -%}
+              <div class="sanak-ugc__product">
+                <a href="{{ block.settings.product.url }}">{{ block.settings.product.title | escape }}</a>
+                {% render 'wishlist-button', product: block.settings.product, class: 'sanak-ugc__wishlist' %}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="sanak-ugc__modal" data-ugc-modal hidden role="dialog" aria-modal="true" aria-label="{{ section.settings.modal_label | escape }}">
+    <button type="button" class="sanak-ugc__backdrop" data-ugc-close tabindex="-1" aria-label="{{ 'accessibility.close' | t }}"></button>
+    <div class="sanak-ugc__dialog" role="document">
+      <button type="button" class="sanak-ugc__close" data-ugc-close aria-label="{{ 'accessibility.close' | t }}">{{ 'icon-close.svg' | inline_asset_content }}</button>
+      <div class="sanak-ugc__player" data-ugc-player></div>
+      <script type="application/json" data-ugc-videos>
+        [
+          {%- for block in section.blocks -%}
+            {"sources": {{ block.settings.video.sources | json }}, "poster": {% if block.settings.poster != blank %}{{ block.settings.poster | image_url: width: 1200 | json }}{% elsif block.settings.video.preview_image != blank %}{{ block.settings.video.preview_image | image_url: width: 1200 | json }}{% else %}""{% endif %}, "loop": {{ section.settings.loop_videos | json }}}{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      </script>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sanak UGC videos",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Seen on you" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Real rituals, real results" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Discover how the Sanak community makes every ritual their own.</p>" },
+    { "type": "text", "id": "modal_label", "label": "Video dialog label", "default": "Community videos" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FAF7EF" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#202B26" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#174C45" },
+    { "type": "range", "id": "columns_desktop", "label": "Cards on desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "card_gap", "label": "Card spacing", "min": 8, "max": 40, "step": 4, "unit": "px", "default": 20 },
+    { "type": "checkbox", "id": "loop_videos", "label": "Loop videos", "default": true },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "image_picker", "id": "poster", "label": "Custom poster" },
+        { "type": "text", "id": "title", "label": "Title", "default": "A Sanak ritual" },
+        { "type": "product", "id": "product", "label": "Featured product" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Sanak UGC videos", "blocks": [{ "type": "video" }, { "type": "video" }, { "type": "video" }, { "type": "video" }] }]
+}
+{% endschema %}

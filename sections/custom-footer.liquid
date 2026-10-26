@@ -1,0 +1,129 @@
+{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-footer.js' | asset_url }}" defer="defer"></script>
+
+<footer
+  class="sanak-footer"
+  data-sanak-footer
+  data-collapse-desktop="{{ section.settings.collapse_desktop }}"
+  data-collapse-mobile="{{ section.settings.collapse_mobile }}"
+  style="--footer-bg: {{ section.settings.background_color }}; --footer-text: {{ section.settings.text_color }}; --footer-heading: {{ section.settings.heading_color }}; --footer-hover: {{ section.settings.link_hover_color }}; --footer-divider: {{ section.settings.divider_color }}; --footer-wordmark: {{ section.settings.wordmark_color }}; --footer-padding-top: {{ section.settings.padding_top }}px; --footer-padding-bottom: {{ section.settings.padding_bottom }}px; --footer-column-gap: {{ section.settings.column_gap }}px; --footer-mobile-gap: {{ section.settings.mobile_gap }}px; --footer-wordmark-size: {{ section.settings.wordmark_size }}vw;"
+>
+  <div class="sanak-footer__inner page-width">
+    <div class="sanak-footer__main">
+      <div class="sanak-footer__menus">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              <section class="sanak-footer__group" {{ block.shopify_attributes }}>
+                <h2 class="sanak-footer__group-heading">
+                  <button
+                    type="button"
+                    class="sanak-footer__trigger"
+                    aria-expanded="true"
+                    aria-controls="FooterPanel-{{ section.id }}-{{ block.id }}"
+                    data-footer-trigger
+                  >
+                    <span>{{ block.settings.heading | default: block.settings.menu.title | escape }}</span>
+                    <span class="sanak-footer__chevron" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                  </button>
+                </h2>
+                <div id="FooterPanel-{{ section.id }}-{{ block.id }}" class="sanak-footer__panel" data-footer-panel>
+                  {%- if block.settings.text != blank -%}<div class="sanak-footer__supporting rte">{{ block.settings.text }}</div>{%- endif -%}
+                  {%- if block.settings.menu != blank -%}
+                    <ul class="sanak-footer__links" role="list">
+                      {%- for link in block.settings.menu.links -%}
+                        <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </section>
+            {%- when 'text' -%}
+              <section class="sanak-footer__group sanak-footer__group--text" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}<h2>{{ block.settings.heading | escape }}</h2>{%- endif -%}
+                <div class="rte">{{ block.settings.text }}</div>
+                {%- if block.settings.link_label != blank and block.settings.link != blank -%}<a class="sanak-footer__text-link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }}</a>{%- endif -%}
+              </section>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_newsletter or section.settings.show_contact or section.settings.show_social -%}
+        <aside class="sanak-footer__aside">
+          {%- if section.settings.show_newsletter -%}
+            <div class="sanak-footer__newsletter">
+              <h2>{{ section.settings.newsletter_heading | escape }}</h2>
+              {%- if section.settings.newsletter_text != blank -%}<div class="rte">{{ section.settings.newsletter_text }}</div>{%- endif -%}
+              {%- assign newsletter_form_id = 'SanakFooterNewsletter-' | append: section.id -%}
+              {%- form 'customer', id: newsletter_form_id, class: 'sanak-footer__form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="sanak-footer__field">
+                  <label class="visually-hidden" for="FooterEmail-{{ section.id }}">{{ 'newsletter.label' | t }}</label>
+                  <input id="FooterEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" autocorrect="off" autocapitalize="off" autocomplete="email" placeholder="{{ 'newsletter.label' | t }}" required>
+                  <button type="submit" aria-label="{{ 'newsletter.button_label' | t }}">{% render 'icons', icon: 'arrow-right' %}</button>
+                </div>
+                {%- if form.errors -%}<small class="sanak-footer__message" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</small>{%- endif -%}
+                {%- if form.posted_successfully? -%}<p class="sanak-footer__message" tabindex="-1">{{ 'newsletter.success' | t }}</p>{%- endif -%}
+              {%- endform -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.show_contact and section.settings.contact_text != blank -%}<div class="sanak-footer__contact rte">{{ section.settings.contact_text }}</div>{%- endif -%}
+          {%- if section.settings.show_social -%}<div class="sanak-footer__social">{% render 'social-icons' %}</div>{%- endif -%}
+        </aside>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.wordmark != blank -%}<div class="sanak-footer__wordmark sanak-footer__wordmark--{{ section.settings.wordmark_alignment }}">{{ section.settings.wordmark | escape }}</div>{%- endif -%}
+
+    <div class="sanak-footer__legal">
+      <p>&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}</p>
+      {%- if section.settings.show_policy_links -%}
+        <ul role="list">
+          {%- for policy in shop.policies -%}{%- if policy != blank -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types != empty -%}
+        <ul class="sanak-footer__payments" role="list">{%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Sanak footer",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#174C45" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FAF7EF" },
+    { "type": "color", "id": "heading_color", "label": "Headings", "default": "#FAF7EF" },
+    { "type": "color", "id": "link_hover_color", "label": "Link hover", "default": "#DCDCDC" },
+    { "type": "color", "id": "divider_color", "label": "Dividers", "default": "#DCDCDC" },
+    { "type": "color", "id": "wordmark_color", "label": "Wordmark", "default": "#FAF7EF" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 16, "max": 120, "step": 8, "unit": "px", "default": 40 },
+    { "type": "range", "id": "column_gap", "label": "Desktop column spacing", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "mobile_gap", "label": "Mobile spacing", "min": 12, "max": 48, "step": 4, "unit": "px", "default": 24 },
+    { "type": "checkbox", "id": "collapse_desktop", "label": "Collapsible menus on desktop", "default": false },
+    { "type": "checkbox", "id": "collapse_mobile", "label": "Collapsible menus on mobile", "default": true },
+    { "type": "header", "content": "Newsletter and information" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Stay in the know" },
+    { "type": "richtext", "id": "newsletter_text", "label": "Newsletter text", "default": "<p>Beauty notes, new rituals and thoughtful launches.</p>" },
+    { "type": "checkbox", "id": "show_contact", "label": "Show contact details", "default": true },
+    { "type": "richtext", "id": "contact_text", "label": "Contact details", "default": "<p>Questions? We would love to hear from you.</p>" },
+    { "type": "checkbox", "id": "show_social", "label": "Show social links", "default": true },
+    { "type": "header", "content": "Wordmark and legal" },
+    { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "SANAK BEAUTY" },
+    { "type": "range", "id": "wordmark_size", "label": "Wordmark size", "min": 8, "max": 18, "step": 1, "unit": "vw", "default": 13 },
+    { "type": "text_alignment", "id": "wordmark_alignment", "label": "Wordmark alignment", "default": "center" },
+    { "type": "checkbox", "id": "show_policy_links", "label": "Show policy links", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Menu", "settings": [{ "type": "text", "id": "heading", "label": "Heading" }, { "type": "link_list", "id": "menu", "label": "Menu" }, { "type": "richtext", "id": "text", "label": "Supporting text" }] },
+    { "type": "text", "name": "Text", "settings": [{ "type": "text", "id": "heading", "label": "Heading" }, { "type": "richtext", "id": "text", "label": "Text" }, { "type": "text", "id": "link_label", "label": "Link label" }, { "type": "url", "id": "link", "label": "Link" }] }
+  ],
+  "presets": [{ "name": "Sanak footer", "blocks": [{ "type": "menu" }, { "type": "menu" }, { "type": "menu" }] }]
+}
+{% endschema %}

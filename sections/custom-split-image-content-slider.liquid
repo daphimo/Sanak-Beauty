@@ -74,14 +74,15 @@
         {%- liquid
           assign background_image = block.settings.background_image
           assign mobile_background_image = block.settings.mobile_background_image | default: background_image
+          assign content_box_opacity = block.settings.background_overlay_opacity | divided_by: 100.0
+          assign content_box_background = block.settings.background_overlay_color | color_modify: 'alpha', content_box_opacity
         -%}
         <article
           class="split-slider__content{% if forloop.first %} is-active{% endif %} split-slider__content--position-{{ block.settings.content_position }} split-slider__content--align-{{ block.settings.text_alignment }}"
           data-content-index="{{ forloop.index0 }}"
-          style="--content-bg: {{ block.settings.background_color }}; --content-overlay: {{ block.settings.background_overlay_color }}; --content-overlay-opacity: {{ block.settings.background_overlay_opacity | divided_by: 100.0 }}; --eyebrow-color: {{ block.settings.eyebrow_color }}; --title-color: {{ block.settings.title_color }}; --body-color: {{ block.settings.description_color }}; --highlight-color: {{ block.settings.highlight_color }};{% if background_image != blank %} --content-bg-image: url('{{ background_image | image_url: width: 1600 }}');{% endif %}{% if mobile_background_image != blank %} --content-mobile-bg-image: url('{{ mobile_background_image | image_url: width: 1000 }}');{% endif %}"
+          style="--content-bg: {{ block.settings.background_color }}; --content-box-bg: {{ content_box_background }}; --eyebrow-color: {{ block.settings.eyebrow_color }}; --title-color: {{ block.settings.title_color }}; --body-color: {{ block.settings.description_color }}; --highlight-color: {{ block.settings.highlight_color }};{% if background_image != blank %} --content-bg-image: url('{{ background_image | image_url: width: 1600 }}');{% endif %}{% if mobile_background_image != blank %} --content-mobile-bg-image: url('{{ mobile_background_image | image_url: width: 1000 }}');{% endif %}"
           {% unless forloop.first %}hidden inert aria-hidden="true"{% endunless %}
         >
-          <span class="split-slider__content-overlay" aria-hidden="true"></span>
           <div class="split-slider__content-inner">
             {%- if block.settings.eyebrow != blank -%}<p class="split-slider__eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
             {%- if block.settings.title != blank -%}<h2 class="split-slider__title">{{ block.settings.title }}</h2>{%- endif -%}
@@ -142,12 +143,12 @@
         { "type": "text", "id": "cta_label", "label": "Button label", "default": "Explore the collection" },
         { "type": "url", "id": "cta_link", "label": "Button link" },
         { "type": "select", "id": "cta_style", "label": "Button style", "options": [{ "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" }, { "value": "link", "label": "Link" }], "default": "primary" },
-        { "type": "header", "content": "Content background" },
+        { "type": "header", "content": "Content panel and box" },
         { "type": "image_picker", "id": "background_image", "label": "Background image" },
         { "type": "image_picker", "id": "mobile_background_image", "label": "Mobile background image" },
-        { "type": "color", "id": "background_color", "label": "Background color", "default": "#FAF7EF" },
-        { "type": "color", "id": "background_overlay_color", "label": "Background overlay color", "default": "#FAF7EF" },
-        { "type": "range", "id": "background_overlay_opacity", "label": "Background overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 70 },
+        { "type": "color", "id": "background_color", "label": "Panel fallback color", "default": "#FAF7EF" },
+        { "type": "color", "id": "background_overlay_color", "label": "Content box background", "default": "#FAF7EF" },
+        { "type": "range", "id": "background_overlay_opacity", "label": "Content box opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 70 },
         { "type": "header", "content": "Colors" },
         { "type": "color", "id": "eyebrow_color", "label": "Eyebrow", "default": "#174C45" },
         { "type": "color", "id": "title_color", "label": "Title", "default": "#202B26" },

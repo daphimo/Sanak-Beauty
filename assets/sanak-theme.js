@@ -1,7 +1,22 @@
 (() => {
   const key = 'sanak:wishlist:v1';
-  const read = () => { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } };
-  const write = (items) => { localStorage.setItem(key, JSON.stringify(items)); window.dispatchEvent(new CustomEvent('sanak:wishlist-change', { detail: items })); };
+  const read = () => {
+    try {
+      const items = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(items) ? [...new Set(items.filter((item) => typeof item === 'string' && item))] : [];
+    } catch {
+      return [];
+    }
+  };
+  const write = (items) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('sanak:wishlist-change', { detail: items }));
+      return true;
+    } catch {
+      return false;
+    }
+  };
   const sync = () => {
     const items = read();
     document.querySelectorAll('[data-wishlist-toggle]').forEach((button) => {
@@ -15,8 +30,11 @@
     const button = event.target.closest('[data-wishlist-toggle]');
     if (!button) return;
     event.preventDefault();
+    event.stopImmediatePropagation();
+    if (button.disabled || button.getAttribute('aria-disabled') === 'true') return;
     const items = read();
     const handle = button.dataset.productHandle;
+    if (!handle) return;
     write(items.includes(handle) ? items.filter((item) => item !== handle) : [...items, handle]);
   });
   window.addEventListener('sanak:wishlist-change', sync);

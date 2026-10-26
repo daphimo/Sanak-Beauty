@@ -105,6 +105,10 @@
 </style>
 
 {%- style -%}
+  #shopify-section-{{ section.id }} .header__heading-logo-wrapper {
+    --header-logo-width: {{ section.settings.mobile_logo_width }}px;
+  }
+
   .header {
     padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
   }
@@ -121,6 +125,10 @@
   }
 
   @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .header__heading-logo-wrapper {
+      --header-logo-width: {{ section.settings.logo_width }}px;
+    }
+
     .header {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
@@ -143,6 +151,9 @@
   if section.settings.enable_transparent_header and request.page_type == 'index'
     assign transparent_header_active = true
   endif
+
+  assign normal_logo = section.settings.normal_logo | default: settings.logo
+  assign largest_logo_width = section.settings.logo_width | at_least: section.settings.mobile_logo_width
 
   assign header_tag = 'div'
 
@@ -203,11 +214,13 @@
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
-          {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-          {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+        {%- if normal_logo != blank -%}
+          {% capture sizes %}(max-width: 989px) {{ section.settings.mobile_logo_width }}px, {{ section.settings.logo_width }}px{% endcapture %}
+          {% capture widths %}{{ largest_logo_width }}, {{ largest_logo_width | times: 1.5 | round }}, {{ largest_logo_width | times: 2 }}{% endcapture %}
           {% render 'header-logo',
+            normal_logo: normal_logo,
             transparent_logo: section.settings.transparent_logo,
+            logo_width: section.settings.logo_width,
             transparent_header_active: transparent_header_active,
             sizes: sizes,
             widths: widths,
@@ -237,11 +250,13 @@
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
-          {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
-          {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+        {%- if normal_logo != blank -%}
+          {% capture sizes %}(max-width: 989px) {{ section.settings.mobile_logo_width }}px, {{ section.settings.logo_width }}px{% endcapture %}
+          {% capture widths %}{{ largest_logo_width }}, {{ largest_logo_width | times: 1.5 | round }}, {{ largest_logo_width | times: 2 }}{% endcapture %}
           {% render 'header-logo',
+            normal_logo: normal_logo,
             transparent_logo: section.settings.transparent_logo,
+            logo_width: section.settings.logo_width,
             transparent_header_active: transparent_header_active,
             sizes: sizes,
             widths: widths
@@ -504,8 +519,8 @@
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": {{ shop.name | json }},
-    {% if settings.logo %}
-      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% if normal_logo %}
+      "logo": {{ normal_logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
     "sameAs": [
       {{ settings.social_twitter_link | json }},
@@ -569,6 +584,32 @@
       "default": "middle-left",
       "label": "t:sections.header.settings.logo_position.label",
       "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "normal_logo",
+      "label": "Normal logo",
+      "info": "Displayed on the normal header and after the transparent header becomes solid."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 90,
+      "unit": "px",
+      "label": "Desktop logo width"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_width",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "default": 90,
+      "unit": "px",
+      "label": "Mobile logo width"
     },
     {
       "type": "select",

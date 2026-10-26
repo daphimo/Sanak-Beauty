@@ -1,7 +1,9 @@
 {% doc %}
   Renders the normal header logo and an optional light transparent-header variant.
 
+  @param {image} normal_logo - Normal logo selected in the header settings.
   @param {image} transparent_logo - Optional light logo selected in the header settings.
+  @param {number} logo_width - Logo width selected in the header settings.
   @param {boolean} transparent_header_active - Whether homepage transparency is active.
   @param {string} sizes - Responsive image sizes value.
   @param {string} widths - Responsive image widths value.
@@ -9,37 +11,39 @@
 {% enddoc %}
 
 {%- liquid
-  assign logo_alt = settings.logo.alt | default: shop.name | escape
-  assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio
+  assign logo_alt = normal_logo.alt | default: shop.name | escape
+  assign logo_height = logo_width | divided_by: normal_logo.aspect_ratio
+  assign default_logo_class = 'header__heading-logo header__heading-logo--default' | append: motion_class
+  assign transparent_logo_class = 'header__heading-logo header__heading-logo--transparent' | append: motion_class
 -%}
 
-<div class="header__heading-logo-wrapper{% if transparent_header_active and transparent_logo != blank %} header__heading-logo-wrapper--has-transparent{% endif %}">
+<span class="header__heading-logo-wrapper{% if transparent_header_active and transparent_logo != blank %} header__heading-logo-wrapper--has-transparent{% endif %}">
   {{
-    settings.logo
+    normal_logo
     | image_url: width: 600
     | image_tag:
-      class: 'header__heading-logo header__heading-logo--default' | append: motion_class,
+      class: default_logo_class,
       widths: widths,
       height: logo_height,
-      width: settings.logo_width,
+      width: logo_width,
       alt: logo_alt,
       sizes: sizes,
       preload: true
   }}
 
   {%- if transparent_header_active and transparent_logo != blank -%}
-    {%- assign transparent_logo_height = settings.logo_width | divided_by: transparent_logo.aspect_ratio -%}
+    {%- assign transparent_logo_height = logo_width | divided_by: transparent_logo.aspect_ratio -%}
     {{
       transparent_logo
       | image_url: width: 600
       | image_tag:
-        class: 'header__heading-logo header__heading-logo--transparent' | append: motion_class,
+        class: transparent_logo_class,
         widths: widths,
         height: transparent_logo_height,
-        width: settings.logo_width,
+        width: logo_width,
         alt: logo_alt,
         sizes: sizes,
         preload: true
     }}
   {%- endif -%}
-</div>
+</span>

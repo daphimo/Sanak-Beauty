@@ -22,7 +22,13 @@
     const key = 'sanak:wishlist:v1';
     const money = (cents, currency) => new Intl.NumberFormat(document.documentElement.lang || 'en', { style: 'currency', currency }).format(cents / 100);
     const render = async () => {
-      const handles = JSON.parse(localStorage.getItem(key) || '[]');
+      let handles = [];
+      try {
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        handles = Array.isArray(stored) ? stored.filter((handle) => typeof handle === 'string' && handle) : [];
+      } catch {
+        handles = [];
+      }
       const grid = root.querySelector('[data-wishlist-grid]');
       const status = root.querySelector('[data-wishlist-status]');
       grid.replaceChildren();
