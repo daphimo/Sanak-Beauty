@@ -12,24 +12,12 @@
     "custom_static_hero_9QWFpH": {
       "type": "custom-static-hero",
       "blocks": {
-        "eyebrow_dC38Tq": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "COLOUR OUTSIDE THE LINES",
-            "text_color": "#202B26",
-            "desktop_size": 12,
-            "mobile_size": 11,
-            "font_weight": "600",
-            "letter_spacing": 18,
-            "text_transform": "uppercase"
-          }
-        },
         "title_9EkXJz": {
           "type": "title",
           "settings": {
-            "heading": "Makeup for your <strong><em>kind</em></strong> of beautiful.",
-            "heading_color": "#202B26",
-            "highlight_color": "#174C45",
+            "heading": "Makeup for your <em><strong>kind</strong></em> of beautiful.",
+            "heading_color": "#FFFFFF",
+            "highlight_color": "#FFFFFF",
             "desktop_size": 76,
             "mobile_size": 48,
             "font_weight": "400",
@@ -39,49 +27,35 @@
             "heading_level": "h2"
           }
         },
-        "content_xdDaGn": {
-          "type": "content",
-          "settings": {
-            "text": "An artful take on colour. Made for brown skin, made for every version of you.",
-            "text_color": "#202B26",
-            "desktop_size": 17,
-            "mobile_size": 15,
-            "font_weight": "400",
-            "line_height": 155,
-            "max_width": 480
-          }
-        },
         "buttons_CBqc7A": {
           "type": "buttons",
           "settings": {
             "button_gap": 24,
             "button_1_enabled": true,
             "button_1_label": "Explore the collection",
-            "button_1_link": "",
+            "button_1_link": "shopify://collections/all",
             "button_1_type": "primary",
             "button_1_arrow": true,
             "button_1_new_tab": false,
-            "button_1_background": "#174C45",
+            "button_1_background": "rgba(0,0,0,0)",
             "button_1_text": "#FAF7EF",
-            "button_1_border": "#174C45",
-            "button_1_radius": 0,
+            "button_1_border": "#FAF7EF",
+            "button_1_radius": 30,
             "button_2_enabled": true,
             "button_2_label": "Meet Sanak",
-            "button_2_link": "",
-            "button_2_type": "link",
+            "button_2_link": "shopify://collections/all",
+            "button_2_type": "primary",
             "button_2_arrow": true,
             "button_2_new_tab": false,
-            "button_2_background": "#FAF7EF",
-            "button_2_text": "#202B26",
-            "button_2_border": "#202B26",
-            "button_2_radius": 0
+            "button_2_background": "rgba(0,0,0,0)",
+            "button_2_text": "#FAF7EF",
+            "button_2_border": "#FAF7EF",
+            "button_2_radius": 30
           }
         }
       },
       "block_order": [
-        "eyebrow_dC38Tq",
         "title_9EkXJz",
-        "content_xdDaGn",
         "buttons_CBqc7A"
       ],
       "name": "Custom static hero",
@@ -89,7 +63,7 @@
         "desktop_image": "shopify://shop_images/Hero_Visual_a5ae1f72-158d-42ab-9940-769b53504acc.jpg",
         "background_color": "#FAF7EF",
         "default_text_color": "#202B26",
-        "content_position": "middle-left",
+        "content_position": "bottom-right",
         "content_alignment": "left",
         "content_width": 700,
         "block_gap": 20,
@@ -97,13 +71,13 @@
         "desktop_horizontal_padding": 60,
         "mobile_vertical_padding": 50,
         "mobile_horizontal_padding": 24,
-        "enable_overlay": false,
+        "enable_overlay": true,
         "overlay_color": "#202B26",
         "overlay_intensity": 20,
-        "desktop_height_mode": "auto",
+        "desktop_height_mode": "custom",
         "desktop_height": 650,
-        "mobile_height_mode": "auto",
-        "mobile_height": 600,
+        "mobile_height_mode": "custom",
+        "mobile_height": 680,
         "accessibility_label": "Featured campaign"
       }
     },
